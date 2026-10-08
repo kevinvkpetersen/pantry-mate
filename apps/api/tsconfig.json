@@ -1,0 +1,10 @@
+{
+    // Visit https://aka.ms/tsconfig to read more about this file
+    "extends": "@tsconfig/node22/tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./dist"
+    },
+    "include": ["**/*.ts"],
+    "exclude": ["dist"]
+}
