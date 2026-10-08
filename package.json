@@ -1,5 +1,11 @@
 {
-  "name": "pantry-mate",
-  "version": "0.1.0",
-  "private": "true"
+    "name": "pantry-mate",
+    "version": "0.1.0",
+    "private": "true",
+    "scripts": {
+        "format": "npx prettier . --write"
+    },
+    "devDependencies": {
+        "prettier": "3.9.9"
+    }
 }
