@@ -1,0 +1,6 @@
+# Manually formatted files
+*.sql
+
+# Config files
+.prettierignore
+.env.*
