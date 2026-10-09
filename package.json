@@ -4,9 +4,23 @@
     "private": "true",
     "scripts": {
         "format": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "install-hooks": "husky"
+    },
+    "lint-staged": {
+        "apps/api/**/*.{js,ts}": [
+            "eslint"
+        ],
+        "**/*.*": [
+            "prettier --check"
+        ]
     },
     "devDependencies": {
-        "prettier": "3.9.9"
+        "@eslint/js": "^10.0.1",
+        "eslint": "^10.12.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.6.0",
+        "prettier": "3.9.9",
+        "typescript-eslint": "^8.71.1"
     }
 }
