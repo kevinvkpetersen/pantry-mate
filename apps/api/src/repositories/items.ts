@@ -1,4 +1,5 @@
 import type { PantryItem } from '@pantry-mate/types';
+
 import { pool } from '../db/pool';
 
 export const listItems = async (): Promise<PantryItem[]> => {
