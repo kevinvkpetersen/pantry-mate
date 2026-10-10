@@ -2,5 +2,11 @@
 *.sql
 
 # Config files
+.gitignore
 .prettierignore
 .env.*
+
+# Assets
+assets/
+*.png
+*.svg
