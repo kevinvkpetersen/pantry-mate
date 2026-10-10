@@ -2,13 +2,16 @@
     "name": "pantry-mate",
     "version": "0.1.0",
     "private": "true",
+    "workspaces": [
+        "apps/api"
+    ],
     "scripts": {
-        "start": "docker compose up -d",
-        "stop": "docker compose down",
-        "install-hooks": "husky",
+        "db:reset": "docker compose down -v && docker compose up -d db",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "db:reset": "docker compose down -v && docker compose up -d db"
+        "install-hooks": "husky",
+        "start": "docker compose up -d",
+        "stop": "docker compose down"
     },
     "lint-staged": {
         "apps/api/**/*.{js,ts}": [
@@ -21,9 +24,11 @@
     "devDependencies": {
         "@eslint/js": "^10.0.1",
         "eslint": "^10.12.0",
+        "eslint-config-prettier": "^10.1.8",
         "husky": "^9.1.7",
         "lint-staged": "^17.6.0",
         "prettier": "3.9.9",
+        "prettier-plugin-packagejson": "^3.0.2",
         "typescript-eslint": "^8.71.1"
     }
 }

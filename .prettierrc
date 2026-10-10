@@ -4,6 +4,7 @@
     "singleQuote": true,
     "useTabs": false,
     "tabWidth": 4,
+    "plugins": ["prettier-plugin-packagejson"],
     "overrides": [
         {
             "files": "*.yml",
