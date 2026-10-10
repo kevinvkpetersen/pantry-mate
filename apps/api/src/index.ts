@@ -1,10 +1,10 @@
 import express from 'express';
+import items from './routes/items';
+import config from './config';
 
 const app = express();
-const PORT = 8080;
+const PORT = config.API_PORT;
 
-app.get('/', (request, response) => {
-    response.send({ message: 'Hello World!' });
-});
+app.use('/items', items);
 
-app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
