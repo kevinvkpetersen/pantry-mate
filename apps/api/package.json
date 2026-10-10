@@ -12,6 +12,7 @@
         "start": "node dist/index.js"
     },
     "dependencies": {
+        "@pantry-mate/types": "*",
         "express": "^5.2.1",
         "pg": "^8.23.1"
     },

@@ -3,7 +3,8 @@
     "version": "0.1.0",
     "private": "true",
     "workspaces": [
-        "apps/api"
+        "apps/*",
+        "packages/*"
     ],
     "scripts": {
         "db:reset": "docker compose down -v && docker compose up -d db",
