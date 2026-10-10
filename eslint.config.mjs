@@ -8,11 +8,20 @@ import eslintConfigPrettier from 'eslint-config-prettier/flat';
 export default defineConfig([
     globalIgnores(['**/dist']),
     {
-        files: ['**/*.{js,ts}'],
+        files: ['**/*.ts'],
         extends: [
             js.configs.recommended,
-            tseslint.configs.recommended,
-            eslintConfigPrettier,
+            tseslint.configs.recommendedTypeChecked,
         ],
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+            },
+        },
     },
+    {
+        files: ['**/*.{js,mjs,cjs}'],
+        extends: [js.configs.recommended, tseslint.configs.disableTypeChecked],
+    },
+    eslintConfigPrettier,
 ]);
