@@ -10,3 +10,7 @@
 assets/
 *.png
 *.svg
+
+# Generated files
+.expo
+expo-env.d.ts

@@ -1,15 +1,20 @@
 // @ts-check
 
+import { createRequire } from 'node:module';
+
 import js from '@eslint/js';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tseslint from 'typescript-eslint';
 
+const require = createRequire(import.meta.url);
+const expoConfig = require('eslint-config-expo/flat');
+
 export default defineConfig([
-    globalIgnores(['**/dist']),
+    globalIgnores(['**/dist', '**/.expo']),
     {
-        files: ['**/*.ts'],
+        files: ['**/*.{ts,tsx}'],
         extends: [
             js.configs.recommended,
             tseslint.configs.recommendedTypeChecked,
@@ -33,6 +38,13 @@ export default defineConfig([
         rules: {
             'simple-import-sort/imports': 'error',
             'simple-import-sort/exports': 'error',
+        },
+    },
+    {
+        files: ['apps/mobile/**/*.{js,jsx,ts,tsx}'],
+        extends: [expoConfig],
+        rules: {
+            'import/no-unresolved': 'off',
         },
     },
     eslintConfigPrettier,

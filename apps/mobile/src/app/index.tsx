@@ -1,13 +1,8 @@
-import { fetchItems } from '@/api/items';
-import { PantryItem } from '@pantry-mate/types';
+import type { PantryItem } from '@pantry-mate/types';
 import { useEffect, useState } from 'react';
-import {
-    Text,
-    View,
-    StyleSheet,
-    ActivityIndicator,
-    FlatList,
-} from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
+
+import { fetchItems } from '@/api/items';
 
 export default function Index() {
     const [items, setItems] = useState<PantryItem[]>([]);
@@ -48,11 +43,3 @@ export default function Index() {
         />
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});

@@ -1,6 +1,11 @@
 {
     "name": "@pantry-mate/types",
     "version": "0.1.0",
-    "private": "true",
-    "types": "src/index.ts"
+    "private": true,
+    "types": "src/index.ts",
+    "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix .",
+        "typecheck": "tsc --noEmit"
+    }
 }

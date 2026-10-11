@@ -1,7 +1,7 @@
 {
     "name": "pantry-mate",
     "version": "0.1.0",
-    "private": "true",
+    "private": true,
     "workspaces": [
         "apps/*",
         "packages/*"
@@ -10,27 +10,31 @@
         "db:reset": "docker compose down -v && docker compose up -d db",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "install-hooks": "husky",
+        "lint": "npm run lint --workspaces --if-present",
+        "lint:fix": "npm run lint:fix --workspaces --if-present",
+        "prepare": "husky",
         "start": "docker compose up -d",
-        "stop": "docker compose down"
+        "stop": "docker compose down",
+        "typecheck": "npm run typecheck --workspaces --if-present"
     },
     "lint-staged": {
-        "apps/api/**/*.{js,ts}": [
-            "eslint"
-        ],
-        "**/*.*": [
-            "prettier --check"
-        ]
+        "*.{js,mjs,cjs,ts,tsx}": "eslint",
+        "*": "prettier --write --ignore-unknown"
     },
     "devDependencies": {
-        "@eslint/js": "^10.0.1",
-        "eslint": "^10.12.0",
+        "@eslint/js": "^9.39.5",
+        "eslint": "^9.39.5",
+        "eslint-config-expo": "^57.0.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-simple-import-sort": "^14.0.0",
         "husky": "^9.1.7",
         "lint-staged": "^17.6.0",
         "prettier": "3.9.9",
         "prettier-plugin-packagejson": "^3.0.2",
+        "typescript": "~6.0.3",
         "typescript-eslint": "^8.71.1"
+    },
+    "engines": {
+        "node": ">=22"
     }
 }
