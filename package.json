@@ -16,6 +16,7 @@
         "prepare": "husky",
         "start": "docker compose up -d",
         "stop": "docker compose down",
+        "test": "npm run test --workspaces --if-present",
         "typecheck": "npm run typecheck --workspaces --if-present"
     },
     "lint-staged": {
