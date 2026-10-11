@@ -2,6 +2,7 @@
     "name": "@pantry-mate/types",
     "version": "0.1.0",
     "private": true,
+    "license": "UNLICENSED",
     "types": "src/index.ts",
     "scripts": {
         "lint": "eslint .",
