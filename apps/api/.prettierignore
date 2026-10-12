@@ -1,2 +1,3 @@
 # Ignore built code
 dist/
+coverage/

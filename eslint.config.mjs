@@ -12,7 +12,7 @@ const require = createRequire(import.meta.url);
 const expoConfig = require('eslint-config-expo/flat');
 
 export default defineConfig([
-    globalIgnores(['**/dist', '**/.expo']),
+    globalIgnores(['**/dist', '**/.expo', '**/coverage']),
     {
         files: ['**/*.{ts,tsx}'],
         extends: [
