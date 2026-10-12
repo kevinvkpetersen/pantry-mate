@@ -27,6 +27,7 @@ pantry-mate/
 ├── docker/
 │   └── db/init/        # SQL run when the database is first created (schema, seed data)
 ├── docs/
+│   ├── decisions/      # Decision log: what was chosen, what was rejected, and why
 ├── compose.yml         # Docker stack config (including Postgres)
 └── .env.example        # server and Docker configuration template
 ├── .github/workflows/  # CI
@@ -67,6 +68,11 @@ Common problems and fixes are in [docs/troubleshooting.md](docs/troubleshooting.
 - [Testing and CI](docs/testing.md): what runs on commit and on every push
 - [Android emulator](docs/android-emulator.md): one-time emulator setup on Ubuntu
 - [Troubleshooting](docs/troubleshooting.md): problems that came up, and their fixes
+- [Decision log](docs/decisions): the significant choices, the alternatives rejected, and why
+
+## AI assistance
+
+AI assistance (Claude) was used for explanations, scaffolding, and code review. Design decisions and their reasoning are mine and are recorded in [docs/decisions](docs/decisions), and I reviewed and tested every change before committing it. `AGENTS.md` lists the conventions the AI tooling is given.
 
 ## License
 
