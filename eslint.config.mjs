@@ -1,5 +1,3 @@
-// @ts-check
-
 import { createRequire } from 'node:module';
 
 import js from '@eslint/js';
@@ -45,6 +43,21 @@ export default defineConfig([
         extends: [expoConfig],
         rules: {
             'import/no-unresolved': 'off',
+        },
+    },
+    {
+        files: ['apps/api/src/**/*.ts'],
+        ignores: ['apps/api/src/config/**', 'apps/api/src/**/*.test.ts'],
+        rules: {
+            'no-restricted-properties': [
+                'error',
+                {
+                    object: 'process',
+                    property: 'env',
+                    message:
+                        'Read environment variables through src/config, not process.env.',
+                },
+            ],
         },
     },
     eslintConfigPrettier,
