@@ -27,3 +27,9 @@ export const PORT_ENV = [
     'POSTGRES_PORT',
 ] as const satisfies readonly NumericEnv[];
 export type PortEnv = (typeof PORT_ENV)[number];
+
+export const URL_ENCODED_ENV = [
+    'POSTGRES_USER',
+    'POSTGRES_PASSWORD',
+    'POSTGRES_DB',
+] as const satisfies readonly EnvKey[];

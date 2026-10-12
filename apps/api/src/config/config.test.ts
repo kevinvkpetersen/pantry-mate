@@ -1,7 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { Config } from './config';
-import { type EnvKey, type OptionalEnv, REQUIRED_ENV } from './env';
+import {
+    type EnvKey,
+    type OptionalEnv,
+    PORT_ENV,
+    REQUIRED_ENV,
+    URL_ENCODED_ENV,
+} from './env';
 
 // config.ts reads process.env when it's imported, so every test needs a fresh import.
 const loadConfig = async () => {
@@ -81,4 +87,57 @@ describe('Config', () => {
             expect(config).toEqual({ ...expectedValues, ...expected });
         }
     );
+
+    it.each(URL_ENCODED_ENV)(
+        'should URL-encode %s so the connection string stays parseable',
+        async (name) => {
+            const badUrlValue = 'p@ss:w/rd#?%&= +é';
+            const expected: Record<EnvKey, string> = {
+                ...testValues,
+                [name]: badUrlValue,
+            };
+            vi.stubEnv(name, badUrlValue);
+
+            const config = await loadConfig();
+            const url = new URL(config.DATABASE_URL);
+
+            expect(decodeURIComponent(url.username)).toBe(
+                expected.POSTGRES_USER
+            );
+            expect(decodeURIComponent(url.password)).toBe(
+                expected.POSTGRES_PASSWORD
+            );
+            expect(url.hostname).toBe(expected.POSTGRES_HOST);
+            expect(url.port).toBe(expected.POSTGRES_PORT);
+            expect(decodeURIComponent(url.pathname.slice(1))).toBe(
+                expected.POSTGRES_DB
+            );
+        }
+    );
+
+    describe.each(PORT_ENV)('%s validation', (name) => {
+        const nonWholeNumberPorts = ['abc', '3000abc', '-1', '1.5', ' '];
+        it.each(nonWholeNumberPorts)(
+            `${name} should throw for %j`,
+            async (value) => {
+                vi.stubEnv(name, value);
+
+                await expect(loadConfig()).rejects.toThrow(
+                    `${name} must be a whole number`
+                );
+            }
+        );
+
+        const outOfRangePorts = ['0', '65536'];
+        it.each(outOfRangePorts)(
+            `${name} should throw for %j`,
+            async (value) => {
+                vi.stubEnv(name, value);
+
+                await expect(loadConfig()).rejects.toThrow(
+                    `Invalid port in ${name}`
+                );
+            }
+        );
+    });
 });
