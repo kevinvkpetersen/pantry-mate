@@ -1,0 +1,60 @@
+# Getting started
+
+A step-by-step setup, from a fresh clone to the app running in an emulator.
+
+## Prerequisites
+
+- **Node.js**, using the version in `.nvmrc` (`nvm use`)
+- **Docker** (Docker Desktop or Docker Engine), with Compose v2
+- **Android Studio** with an x86_64 emulator image, to run the app. See [android-emulator.md](android-emulator.md).
+
+## Steps
+
+1. **Install dependencies** from the repo root. This also installs the git hooks.
+
+    ```bash
+    npm install
+    ```
+
+2. **Create the server config.** Copy the template (`.env.example`) and fill in the values, including a database password. See [configuration.md](configuration.md) for an explanation of each variable.
+
+    ```bash
+    cp .env.example .env
+    ```
+
+3. **Start the database.**
+
+    ```bash
+    npm start
+    ```
+
+    On the first run, Postgres executes the scripts in `docker/db/init/` in alphabetical order. They only run when the data volume is empty, so after changing them, run `npm run db:reset`.
+
+4. **Run the API.**
+
+    ```bash
+    npm run -w apps/api dev
+    ```
+
+    Check that it works with `curl http://localhost:3000/items` (adjust the port if you changed `API_PORT`).
+
+5. **Check the app config.** `apps/mobile/.env.development` should contain the API address as the Android emulator sees it. The emulator reaches your computer at `10.0.2.2`, not `localhost`. If the file is missing, create it:
+
+    ```bash
+    echo "EXPO_PUBLIC_API_URL=http://10.0.2.2:3000" > apps/mobile/.env.development
+    ```
+
+    Change the port if you changed `API_PORT`. Only put public values in this file, because anything prefixed `EXPO_PUBLIC_` is bundled into the app.
+
+6. **Run the app.** Start the emulator first (see [android-emulator.md](android-emulator.md)), then:
+
+    ```bash
+    npm run -w apps/mobile start -- --clear
+    ```
+
+    Press `a` to open it in the emulator. Use `--clear` whenever you change an env file, because the values are baked into the bundle.
+
+## Next
+
+- [scripts.md](scripts.md) lists the other commands.
+- [troubleshooting.md](troubleshooting.md) covers the problems you're most likely to hit.
