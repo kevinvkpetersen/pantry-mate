@@ -7,6 +7,9 @@ Short records of the significant technical decisions in this project: what was c
 | #                                                           | Title                                        | Status   |
 | ----------------------------------------------------------- | -------------------------------------------- | -------- |
 | [0001](0001-postgres-in-docker-with-the-api-on-the-host.md) | Postgres in Docker, with the API on the host | Accepted |
+| [0002](0002-layered-api-with-plain-pg.md)                   | Layered API with plain `pg`                  | Accepted |
+| [0003](0003-shared-types-package-without-a-build-step.md)   | Shared types package without a build step    | Accepted |
+| [0004](0004-monorepo-with-npm-workspaces.md)                | Monorepo with npm workspaces                 | Accepted |
 
 ## Adding a decision
 
