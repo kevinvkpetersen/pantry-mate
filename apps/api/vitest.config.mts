@@ -2,6 +2,24 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     test: {
+        projects: [
+            {
+                test: {
+                    name: 'unit',
+                    include: ['src/**/*.test.ts'],
+                },
+            },
+            {
+                test: {
+                    name: 'integration',
+                    include: ['test/**/*.test.ts'],
+                    globalSetup: ['test/setup/global-setup.ts'],
+                    setupFiles: ['test/setup/setup.ts'],
+                    fileParallelism: false,
+                    testTimeout: 30_000,
+                },
+            },
+        ],
         coverage: {
             provider: 'v8',
             include: ['src/**/*.ts'],
