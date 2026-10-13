@@ -37,7 +37,7 @@ npx expo install --fix          # (in apps/mobile) fix incompatible package vers
 # Configuration
 
 - Read config from environment variables. Never hardcode secrets.
-- The root `.env` holds server and Docker config (database credentials, `API_PORT`, `DATABASE_URL`). Keep `.env.example` in sync when adding variables.
+- The root `.env` holds server and Docker config (the `POSTGRES_*` database credentials and `API_PORT`). The API builds its connection string from these in `src/config`, so don't add a `DATABASE_URL` variable. Keep `.env.example` in sync when adding variables.
 - `apps/mobile/.env.development` holds only public `EXPO_PUBLIC_*` values, which are bundled into the app. Never put secrets there.
 - The Android emulator reaches the host machine at `10.0.2.2`, not `localhost`.
 
