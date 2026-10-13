@@ -10,6 +10,10 @@ Short records of the significant technical decisions in this project: what was c
 | [0002](0002-layered-api-with-plain-pg.md)                   | Layered API with plain `pg`                  | Accepted |
 | [0003](0003-shared-types-package-without-a-build-step.md)   | Shared types package without a build step    | Accepted |
 | [0004](0004-monorepo-with-npm-workspaces.md)                | Monorepo with npm workspaces                 | Accepted |
+| [0005](0005-expo-over-bare-react-native.md)                 | Expo over bare React Native                  | Accepted |
+| [0006](0006-eslint-pinned-to-version-9.md)                  | ESLint pinned to version 9                   | Accepted |
+| [0007](0007-unlicensed-all-rights-reserved.md)              | `UNLICENSED`, all rights reserved            | Accepted |
+| [0008](0008-vitest-for-the-api-jest-for-mobile.md)          | Vitest for the API, Jest for mobile          | Accepted |
 
 ## Adding a decision
 
