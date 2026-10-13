@@ -9,11 +9,11 @@ vi.mock('../repositories/items', () => ({
     listItems: vi.fn(),
 }));
 
-afterEach(() => {
-    vi.clearAllMocks();
-});
-
 describe('Items', () => {
+    afterEach(() => {
+        vi.clearAllMocks();
+    });
+
     it('returns the items from the repository', async () => {
         const items: PantryItem[] = [
             {

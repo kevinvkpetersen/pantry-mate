@@ -7,6 +7,13 @@ export default defineConfig({
                 test: {
                     name: 'unit',
                     include: ['src/**/*.test.ts'],
+                    env: {
+                        POSTGRES_USER: 'unit-test-user',
+                        POSTGRES_PASSWORD: 'unit-test-password',
+                        POSTGRES_DB: 'unit-test-db',
+                        POSTGRES_HOST: 'unit-test-host.invalid',
+                        POSTGRES_PORT: '5432',
+                    },
                 },
             },
             {
