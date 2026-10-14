@@ -27,13 +27,13 @@ pantry-mate/
 ├── docker/
 │   └── db/init/        # SQL run when the database is first created (schema, seed data)
 ├── docs/
-│   ├── decisions/      # Decision log: what was chosen, what was rejected, and why
+│   └── decisions/      # Decision log: what was chosen, what was rejected, and why
 ├── compose.yml         # Docker stack config (including Postgres)
-└── .env.example        # server and Docker configuration template
+├── .env.example        # server and Docker configuration template
 ├── .github/workflows/  # CI
 ├── eslint.config.mjs   # one lint config for the whole repo
 ├── AGENTS.md           # conventions for AI coding tools
-├── LICENSE
+└── LICENSE
 ```
 
 The API and mobile app run on your machine. Postgres runs in Docker.

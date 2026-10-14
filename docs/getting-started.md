@@ -36,7 +36,7 @@ A step-by-step setup, from a fresh clone to the app running in an emulator.
     npm run -w apps/api dev
     ```
 
-    Check that it works with `curl http://localhost:3000/items` (adjust the port if you changed `API_PORT`).
+    Check that it works with `curl http://localhost:3000/health` (adjust the port if you changed `API_PORT`). It returns `{"status":"ok"}` when the API can reach the database. A `503` with `{"status":"unavailable"}` means the API is running but can't reach Postgres, so check that the database from step 3 is up and that `.env` matches it. To see the seed data, try `curl http://localhost:3000/items`.
 
 5. **Check the app config.** `apps/mobile/.env.development` should contain the API address as the Android emulator sees it. The emulator reaches your computer at `10.0.2.2`, not `localhost`. If the file is missing, create it:
 
