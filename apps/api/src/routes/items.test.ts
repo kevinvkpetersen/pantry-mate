@@ -2,8 +2,8 @@ import type { PantryItem } from '@pantry-mate/types';
 import request from 'supertest';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { app } from '../app';
 import { listItems } from '../repositories/items';
+import { app } from '../server/app';
 
 vi.mock('../repositories/items', () => ({
     listItems: vi.fn(),

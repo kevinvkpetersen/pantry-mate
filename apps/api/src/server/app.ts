@@ -1,7 +1,7 @@
 import express from 'express';
 
-import health from './routes/health';
-import items from './routes/items';
+import health from '../routes/health';
+import items from '../routes/items';
 
 export const app = express();
 
