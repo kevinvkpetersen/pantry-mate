@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import { pool } from './pool';
 
 export const isDatabaseAlive = async (targetPool = pool) => {
@@ -6,7 +7,8 @@ export const isDatabaseAlive = async (targetPool = pool) => {
         .then(() => {
             return true;
         })
-        .catch(() => {
+        .catch((err: unknown) => {
+            logger.warn({ err }, 'Database health check failed');
             return false;
         });
 };

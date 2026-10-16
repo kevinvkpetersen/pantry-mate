@@ -21,6 +21,9 @@ export default defineConfig({
                 test: {
                     name: 'integration',
                     include: ['test/**/*.test.ts'],
+                    env: {
+                        LOG_LEVEL: 'silent',
+                    },
                     globalSetup: ['test/setup/global-setup.ts'],
                     setupFiles: ['test/setup/setup.ts'],
                     fileParallelism: false,

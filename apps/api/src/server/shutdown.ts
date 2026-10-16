@@ -47,7 +47,10 @@ export const registerShutdownCallbacks = ({
         emitter.once(signal, () => {
             logger.info({ signal }, 'Received shutdown signal');
             if (isShuttingDown()) {
-                logger.warn(`Already shutting down due to ${shutdownSignal}`);
+                logger.warn(
+                    { signal, shutdownSignal },
+                    'Already shutting down'
+                );
                 return;
             }
 
@@ -59,15 +62,19 @@ export const registerShutdownCallbacks = ({
                         await new Promise((resolve) =>
                             setTimeout(resolve, delay)
                         );
+                        logger.debug({ delay }, 'Drain delay finished');
                     }
                     if (timeout > 0) {
                         timeoutTimer = setTimeout(() => {
-                            logger.error('Shutdown timed out');
+                            logger.error({ timeout }, 'Shutdown timed out');
                             process.exit(1);
                         }, timeout);
                     }
                     await closeServerAsync(server);
+                    logger.debug('HTTP server closed');
                     await closePool();
+                    logger.debug('Database pool closed');
+                    logger.info('Shutdown complete');
                     process.exit(0);
                 } catch (err) {
                     logger.error({ err }, 'Error during shutdown');
