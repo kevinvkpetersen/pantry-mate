@@ -2,6 +2,11 @@ import type EventEmitter from 'node:events';
 
 import { closePool } from '../db/pool';
 
+export const SHUTDOWN_SIGNALS: readonly NodeJS.Signals[] = [
+    'SIGTERM',
+    'SIGINT',
+];
+
 let shutdownSignal: NodeJS.Signals | undefined;
 
 export const isShuttingDown = () => !!shutdownSignal;
@@ -33,14 +38,20 @@ export const registerShutdownCallbacks = ({
     emitter?: EventEmitter;
     server: ClosableServer;
 }) => {
-    const signal = 'SIGTERM';
-    emitter.once(signal, () => {
-        console.log(`Received ${signal}`);
-        signalShutdown(signal);
-        void (async () => {
-            await closeServerAsync(server);
-            await closePool();
-            process.exit(0);
-        })();
-    });
+    for (const signal of SHUTDOWN_SIGNALS) {
+        emitter.once(signal, () => {
+            console.log(`Received ${signal}`);
+            if (isShuttingDown()) {
+                return;
+            }
+
+            signalShutdown(signal);
+            // TODO: Add a drain delay
+            void (async () => {
+                await closeServerAsync(server);
+                await closePool();
+                process.exit(0);
+            })();
+        });
+    }
 };
