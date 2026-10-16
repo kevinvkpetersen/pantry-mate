@@ -13,7 +13,7 @@ Run these from the repo root. Commands that work across the repo run in every wo
 | `npm run lint:fix`               | ESLint with autofix in every workspace                            |
 | `npm run format`                 | Format the repo with Prettier                                     |
 | `npm run format:check`           | Check formatting without changing files                           |
-| `npm run -w apps/api dev`        | API in watch mode                                                 |
+| `npm run -w apps/api dev`        | API in watch mode, with logs formatted by `pino-pretty`           |
 | `npm run -w apps/api build`      | Compile the API to `apps/api/dist`                                |
 | `npm run -w apps/api test:unit`  | API unit tests only, without Docker                               |
 | `npm run -w apps/api test:int`   | API integration tests only (needs Docker)                         |

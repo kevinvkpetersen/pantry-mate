@@ -1,3 +1,5 @@
+import type { LevelWithSilent } from 'pino';
+
 import type { NumericEnv, OptionalEnv, PortEnv, RequiredEnv } from './env';
 
 const required = (name: RequiredEnv): string => {
@@ -30,11 +32,32 @@ const port = (name: PortEnv, fallback?: number): number => {
     return value;
 };
 
+const LOG_LEVELS: readonly LevelWithSilent[] = [
+    'fatal',
+    'error',
+    'warn',
+    'info',
+    'debug',
+    'trace',
+    'silent',
+];
+
+const logLevel = (fallback: LevelWithSilent): LevelWithSilent => {
+    const value = optional('LOG_LEVEL', fallback);
+
+    if (!(LOG_LEVELS as readonly string[]).includes(value)) {
+        throw new Error(`Invalid log level: ${value}`);
+    }
+
+    return value as LevelWithSilent;
+};
+
 export const config = {
     API_PORT: port('API_PORT', 3000),
+    DATABASE_URL: `postgres://${encodeURIComponent(required('POSTGRES_USER'))}:${encodeURIComponent(required('POSTGRES_PASSWORD'))}@${optional('POSTGRES_HOST', 'localhost')}:${port('POSTGRES_PORT')}/${encodeURIComponent(required('POSTGRES_DB'))}`,
     SHUTDOWN_DRAIN_DELAY_MS: numeric('SHUTDOWN_DRAIN_DELAY_MS', 0),
     SHUTDOWN_TIMEOUT_MS: numeric('SHUTDOWN_TIMEOUT_MS', 8000),
-    DATABASE_URL: `postgres://${encodeURIComponent(required('POSTGRES_USER'))}:${encodeURIComponent(required('POSTGRES_PASSWORD'))}@${optional('POSTGRES_HOST', 'localhost')}:${port('POSTGRES_PORT')}/${encodeURIComponent(required('POSTGRES_DB'))}`,
+    LOG_LEVEL: logLevel('info'),
 };
 
 export type Config = typeof config;

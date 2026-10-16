@@ -63,5 +63,12 @@ export default defineConfig([
             ],
         },
     },
+    {
+        files: ['apps/api/src/**/*.ts'],
+        ignores: ['apps/api/src/**/*.test.ts'],
+        rules: {
+            'no-console': 'error',
+        },
+    },
     eslintConfigPrettier,
 ]);

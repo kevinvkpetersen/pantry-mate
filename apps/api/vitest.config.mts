@@ -13,6 +13,7 @@ export default defineConfig({
                         POSTGRES_DB: 'unit-test-db',
                         POSTGRES_HOST: 'unit-test-host.invalid',
                         POSTGRES_PORT: '5432',
+                        LOG_LEVEL: 'silent',
                     },
                 },
             },

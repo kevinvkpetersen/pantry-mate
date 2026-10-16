@@ -1,6 +1,7 @@
 import type EventEmitter from 'node:events';
 
 import { closePool } from '../db/pool';
+import { logger } from '../logger';
 
 export const SHUTDOWN_SIGNALS: readonly NodeJS.Signals[] = [
     'SIGTERM',
@@ -44,9 +45,9 @@ export const registerShutdownCallbacks = ({
 }) => {
     for (const signal of SHUTDOWN_SIGNALS) {
         emitter.once(signal, () => {
-            console.log(`Received ${signal}`);
+            logger.info({ signal }, 'Received shutdown signal');
             if (isShuttingDown()) {
-                console.log(`Already shutting down due to ${shutdownSignal}`);
+                logger.warn(`Already shutting down due to ${shutdownSignal}`);
                 return;
             }
 
@@ -61,15 +62,15 @@ export const registerShutdownCallbacks = ({
                     }
                     if (timeout > 0) {
                         timeoutTimer = setTimeout(() => {
-                            console.error('Shutdown timed out');
+                            logger.error('Shutdown timed out');
                             process.exit(1);
                         }, timeout);
                     }
                     await closeServerAsync(server);
                     await closePool();
                     process.exit(0);
-                } catch (error) {
-                    console.error('Error during shutdown:', error);
+                } catch (err) {
+                    logger.error({ err }, 'Error during shutdown');
                     process.exit(1);
                 } finally {
                     clearTimeout(timeoutTimer);

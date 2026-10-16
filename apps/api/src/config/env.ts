@@ -11,6 +11,7 @@ export const OPTIONAL_ENV = [
     'POSTGRES_HOST',
     'SHUTDOWN_DRAIN_DELAY_MS',
     'SHUTDOWN_TIMEOUT_MS',
+    'LOG_LEVEL',
 ] as const;
 
 export type RequiredEnv = (typeof REQUIRED_ENV)[number];

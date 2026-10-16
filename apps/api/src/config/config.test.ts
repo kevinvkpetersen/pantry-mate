@@ -26,6 +26,7 @@ const testValues: Record<EnvKey, string> = {
     API_PORT: '4321',
     SHUTDOWN_DRAIN_DELAY_MS: '1500',
     SHUTDOWN_TIMEOUT_MS: '5000',
+    LOG_LEVEL: 'warn',
 };
 
 const expectedValues = {
@@ -33,6 +34,7 @@ const expectedValues = {
     SHUTDOWN_DRAIN_DELAY_MS: 1500,
     SHUTDOWN_TIMEOUT_MS: 5000,
     DATABASE_URL: `postgres://${testValues.POSTGRES_USER}:${testValues.POSTGRES_PASSWORD}@${testValues.POSTGRES_HOST}:${testValues.POSTGRES_PORT}/${testValues.POSTGRES_DB}`,
+    LOG_LEVEL: 'warn',
 };
 
 // What config should become when each optional variable is unset.
@@ -43,6 +45,7 @@ const defaultsWhenMissing: Record<OptionalEnv, Partial<Config>> = {
     },
     SHUTDOWN_DRAIN_DELAY_MS: { SHUTDOWN_DRAIN_DELAY_MS: 0 },
     SHUTDOWN_TIMEOUT_MS: { SHUTDOWN_TIMEOUT_MS: 8000 },
+    LOG_LEVEL: { LOG_LEVEL: 'info' },
 };
 
 describe('Config', () => {
@@ -160,4 +163,16 @@ describe('Config', () => {
             }
         );
     });
+
+    const invalidLogLevels = ['verbose', 'none'];
+    it.each(invalidLogLevels)(
+        'should throw for invalid log level %j',
+        async (value) => {
+            vi.stubEnv('LOG_LEVEL', value);
+
+            await expect(loadConfig()).rejects.toThrow(
+                `Invalid log level: ${value}`
+            );
+        }
+    );
 });

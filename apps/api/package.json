@@ -5,7 +5,7 @@
     "license": "UNLICENSED",
     "scripts": {
         "build": "tsc -p tsconfig.build.json",
-        "dev": "tsx watch --env-file=../../.env src/index.ts",
+        "dev": "tsx watch --env-file=../../.env src/index.ts | pino-pretty",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "start": "node --env-file=../../.env dist/index.js",
@@ -18,7 +18,9 @@
     "dependencies": {
         "@pantry-mate/types": "*",
         "express": "^5.2.1",
-        "pg": "^8.23.1"
+        "pg": "^8.23.1",
+        "pino": "^10.4.0",
+        "pino-http": "^11.0.0"
     },
     "devDependencies": {
         "@testcontainers/postgresql": "^12.2.0",
@@ -28,6 +30,7 @@
         "@types/pg": "^8.23.1",
         "@types/supertest": "^7.2.1",
         "@vitest/coverage-v8": "^5.0.3",
+        "pino-pretty": "^13.2.0",
         "supertest": "^7.3.1",
         "tsx": "^4.23.15",
         "vitest": "^5.0.3"

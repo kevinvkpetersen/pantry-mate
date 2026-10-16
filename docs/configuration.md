@@ -13,6 +13,16 @@
 
 Docker Compose reads the same `POSTGRES_*` values to create the database. The API checks every variable when it starts, and exits with an error message naming the variable if one is missing or malformed.
 
+### Logging
+
+The API writes its logs as JSON, one object per line, to stdout. `npm run -w apps/api dev` pipes them through `pino-pretty` to make them readable. Successful `/health` requests aren't logged, so frequent healthchecks don't bury everything else. See [decision 0012](decisions/0012-structured-logging-with-pino.md).
+
+| Variable    | Required | Default | Notes                                                                                           |
+| ----------- | -------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `LOG_LEVEL` | No       | `info`  | The least severe level written: `fatal`, `error`, `warn`, `info`, `debug`, `trace`, or `silent` |
+
+Set it to `debug` to see more detail while investigating a problem. The unit tests run with `silent`.
+
 ### Shutdown
 
 When the API receives `SIGTERM` or `SIGINT`, `/health` starts returning `503` with `{"status":"shutting_down"}`. The API then waits for the drain delay, stops accepting connections, finishes the requests in progress, and closes the database pool. See [decision 0011](decisions/0011-graceful-shutdown-with-a-drain-delay.md).
