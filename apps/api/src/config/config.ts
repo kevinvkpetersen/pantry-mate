@@ -32,6 +32,8 @@ const port = (name: PortEnv, fallback?: number): number => {
 
 export const config = {
     API_PORT: port('API_PORT', 3000),
+    SHUTDOWN_DRAIN_DELAY_MS: numeric('SHUTDOWN_DRAIN_DELAY_MS', 0),
+    SHUTDOWN_TIMEOUT_MS: numeric('SHUTDOWN_TIMEOUT_MS', 8000),
     DATABASE_URL: `postgres://${encodeURIComponent(required('POSTGRES_USER'))}:${encodeURIComponent(required('POSTGRES_PASSWORD'))}@${optional('POSTGRES_HOST', 'localhost')}:${port('POSTGRES_PORT')}/${encodeURIComponent(required('POSTGRES_DB'))}`,
 };
 

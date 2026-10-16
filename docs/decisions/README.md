@@ -16,6 +16,7 @@ Short records of the significant technical decisions in this project: what was c
 | [0008](0008-vitest-for-the-api-jest-for-mobile.md)          | Vitest for the API, Jest for mobile          | Accepted |
 | [0009](0009-testcontainers-for-integration-tests.md)        | Testcontainers for integration tests         | Accepted |
 | [0010](0010-single-readiness-style-health-endpoint.md)      | Single readiness-style health endpoint       | Accepted |
+| [0011](0011-graceful-shutdown-with-a-drain-delay.md)        | Graceful shutdown with a drain delay         | Accepted |
 
 ## Adding a decision
 

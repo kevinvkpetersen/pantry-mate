@@ -6,4 +6,8 @@ const server = app.listen(config.API_PORT, () =>
     console.log(`Listening on port ${config.API_PORT}`)
 );
 
-registerShutdownCallbacks({ server });
+registerShutdownCallbacks({
+    server,
+    delay: config.SHUTDOWN_DRAIN_DELAY_MS,
+    timeout: config.SHUTDOWN_TIMEOUT_MS,
+});

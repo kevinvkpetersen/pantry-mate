@@ -15,7 +15,9 @@ Run these from the repo root. Commands that work across the repo run in every wo
 | `npm run format:check`           | Check formatting without changing files                           |
 | `npm run -w apps/api dev`        | API in watch mode                                                 |
 | `npm run -w apps/api build`      | Compile the API to `apps/api/dist`                                |
-| `npm run -w apps/api test:watch` | Re-run the API tests on change, without coverage                  |
+| `npm run -w apps/api test:unit`  | API unit tests only, without Docker                               |
+| `npm run -w apps/api test:int`   | API integration tests only (needs Docker)                         |
+| `npm run -w apps/api test:watch` | Re-run the API unit tests on change, without coverage             |
 | `npm run -w apps/mobile start`   | Expo dev server                                                   |
 
 `npm run db:reset` deletes the database's data. Use it when you change the schema or seed scripts, and not when you want to keep what's in the database.

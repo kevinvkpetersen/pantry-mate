@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Config } from './config';
 import {
     type EnvKey,
+    NUMERIC_ENV,
     type OptionalEnv,
     PORT_ENV,
     REQUIRED_ENV,
@@ -23,10 +24,14 @@ const testValues: Record<EnvKey, string> = {
     POSTGRES_PORT: '5433',
     POSTGRES_DB: 'testdb',
     API_PORT: '4321',
+    SHUTDOWN_DRAIN_DELAY_MS: '1500',
+    SHUTDOWN_TIMEOUT_MS: '5000',
 };
 
 const expectedValues = {
     API_PORT: 4321,
+    SHUTDOWN_DRAIN_DELAY_MS: 1500,
+    SHUTDOWN_TIMEOUT_MS: 5000,
     DATABASE_URL: `postgres://${testValues.POSTGRES_USER}:${testValues.POSTGRES_PASSWORD}@${testValues.POSTGRES_HOST}:${testValues.POSTGRES_PORT}/${testValues.POSTGRES_DB}`,
 };
 
@@ -36,6 +41,8 @@ const defaultsWhenMissing: Record<OptionalEnv, Partial<Config>> = {
     POSTGRES_HOST: {
         DATABASE_URL: `postgres://${testValues.POSTGRES_USER}:${testValues.POSTGRES_PASSWORD}@localhost:${testValues.POSTGRES_PORT}/${testValues.POSTGRES_DB}`,
     },
+    SHUTDOWN_DRAIN_DELAY_MS: { SHUTDOWN_DRAIN_DELAY_MS: 0 },
+    SHUTDOWN_TIMEOUT_MS: { SHUTDOWN_TIMEOUT_MS: 8000 },
 };
 
 describe('Config', () => {
@@ -115,9 +122,9 @@ describe('Config', () => {
         }
     );
 
-    describe.each(PORT_ENV)('%s validation', (name) => {
-        const nonWholeNumberPorts = ['abc', '3000abc', '-1', '1.5', ' '];
-        it.each(nonWholeNumberPorts)(
+    describe.each(NUMERIC_ENV)('%s number validation', (name) => {
+        const nonWholeNumbers = ['abc', '3000abc', '-1', '1.5', ' '];
+        it.each(nonWholeNumbers)(
             `${name} should throw for %j`,
             async (value) => {
                 vi.stubEnv(name, value);
@@ -127,7 +134,20 @@ describe('Config', () => {
                 );
             }
         );
+    });
 
+    it.each(['SHUTDOWN_DRAIN_DELAY_MS', 'SHUTDOWN_TIMEOUT_MS'] as const)(
+        'should accept 0 for %s, which turns it off',
+        async (name) => {
+            vi.stubEnv(name, '0');
+
+            const config = await loadConfig();
+
+            expect(config[name]).toBe(0);
+        }
+    );
+
+    describe.each(PORT_ENV)('%s port validation', (name) => {
         const outOfRangePorts = ['0', '65536'];
         it.each(outOfRangePorts)(
             `${name} should throw for %j`,

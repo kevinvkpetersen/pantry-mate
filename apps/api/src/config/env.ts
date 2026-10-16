@@ -6,7 +6,12 @@ export const REQUIRED_ENV = [
     'POSTGRES_PORT',
     'POSTGRES_DB',
 ] as const;
-export const OPTIONAL_ENV = ['API_PORT', 'POSTGRES_HOST'] as const;
+export const OPTIONAL_ENV = [
+    'API_PORT',
+    'POSTGRES_HOST',
+    'SHUTDOWN_DRAIN_DELAY_MS',
+    'SHUTDOWN_TIMEOUT_MS',
+] as const;
 
 export type RequiredEnv = (typeof REQUIRED_ENV)[number];
 export type OptionalEnv = (typeof OPTIONAL_ENV)[number];
@@ -19,6 +24,8 @@ export type EnvKey = RequiredEnv | OptionalEnv;
 export const NUMERIC_ENV = [
     'API_PORT',
     'POSTGRES_PORT',
+    'SHUTDOWN_DRAIN_DELAY_MS',
+    'SHUTDOWN_TIMEOUT_MS',
 ] as const satisfies readonly EnvKey[];
 export type NumericEnv = (typeof NUMERIC_ENV)[number];
 

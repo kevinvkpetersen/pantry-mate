@@ -2,12 +2,23 @@
 
 ## Tests
 
-`npm test` runs the API's unit tests with Vitest and supertest. They mock the repository, so no database is needed and they execute in well under a second.
+The API has two kinds of tests, set up as two Vitest projects in one config:
 
-- The terminal prints a coverage table after each run, and an HTML report is written to `apps/api/coverage`.
-- `npm run -w apps/api test:watch` re-runs tests on save. Coverage is disabled in this mode to keep the execution quick and the output uncluttered.
-- New code should be fully covered. If a file or line can't be meaningfully unit tested, exclude it deliberately and record the reason next to the exclusion, in the coverage config or in a `v8 ignore` comment.
-- `config.ts` and the route are fully covered. The repository and the database pool show as uncovered because only a real Postgres can verify the SQL, and mocking `pg` would raise the number without testing anything. Integration tests against a real database are planned to close that gap.
+- **Unit tests** sit beside the code they test (`src/**/*.test.ts`). They mock the repository and the database, using supertest for HTTP requests, and run in well under a second. The project sets dummy `POSTGRES_*` values, so they don't need a `.env`.
+- **Integration tests** live in `apps/api/test/`. They run the real repository and pool against a throwaway `postgres:18` container started with Testcontainers. The container starts once per run, is loaded with `docker/db/init/001-schema.sql` (not the seed data), and the table is emptied before each test. The files run one at a time, because they share the database. See [decision 0009](decisions/0009-testcontainers-for-integration-tests.md).
+
+| Command                          | What it runs                                 | Needs Docker |
+| -------------------------------- | -------------------------------------------- | ------------ |
+| `npm test`                       | Both projects, with coverage                 | Yes          |
+| `npm run -w apps/api test:unit`  | Unit tests only                              | No           |
+| `npm run -w apps/api test:int`   | Integration tests only                       | Yes          |
+| `npm run -w apps/api test:watch` | Unit tests, re-run on save, without coverage | No           |
+
+The first integration run is slower while Docker pulls the Postgres image.
+
+- `npm test` measures both projects together and prints one coverage table. An HTML report is written to `apps/api/coverage`.
+- New code should be fully covered. If a file or line can't be meaningfully tested, exclude it deliberately and record the reason next to the exclusion, in the coverage config or in a `v8 ignore` comment. `index.ts` files are excluded, because they only wire things together, so keep logic out of them.
+- Code that only a real Postgres can verify, such as SQL and the `::float8` and date conversions, is covered by integration tests rather than by mocking `pg`.
 
 ## Before a commit
 

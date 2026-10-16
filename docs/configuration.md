@@ -13,6 +13,17 @@
 
 Docker Compose reads the same `POSTGRES_*` values to create the database. The API checks every variable when it starts, and exits with an error message naming the variable if one is missing or malformed.
 
+### Shutdown
+
+When the API receives `SIGTERM` or `SIGINT`, `/health` starts returning `503` with `{"status":"shutting_down"}`. The API then waits for the drain delay, stops accepting connections, finishes the requests in progress, and closes the database pool. See [decision 0011](decisions/0011-graceful-shutdown-with-a-drain-delay.md).
+
+| Variable                  | Required | Default | Notes                                                                                     |
+| ------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------- |
+| `SHUTDOWN_DRAIN_DELAY_MS` | No       | `0`     | Time to keep serving after the signal, so a load balancer can stop sending traffic        |
+| `SHUTDOWN_TIMEOUT_MS`     | No       | `8000`  | Time allowed to close the server and the pool after the delay, before exiting with code 1 |
+
+Both are whole numbers of milliseconds, and `0` turns the delay or the timeout off. Keep the delay at `0` in development, because `tsx watch` restarts the API with `SIGTERM` on every save. Wherever the API runs, the delay plus the timeout must be shorter than the time the platform allows before it kills the process. Docker Compose allows 10 seconds by default (`stop_grace_period`).
+
 ## Mobile App (`apps/mobile/.env.*`)
 
 `EXPO_PUBLIC_API_URL` is the full address of the API, for example `http://10.0.2.2:3000` for the Android emulator. Expo bundles every `EXPO_PUBLIC_*` value into the app, so never put a secret in these files. The values are baked in at bundle time, so restart Metro with `--clear` after changing one.
