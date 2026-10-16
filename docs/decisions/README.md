@@ -17,6 +17,7 @@ Short records of the significant technical decisions in this project: what was c
 | [0009](0009-testcontainers-for-integration-tests.md)        | Testcontainers for integration tests         | Accepted |
 | [0010](0010-single-readiness-style-health-endpoint.md)      | Single readiness-style health endpoint       | Accepted |
 | [0011](0011-graceful-shutdown-with-a-drain-delay.md)        | Graceful shutdown with a drain delay         | Accepted |
+| [0012](0012-structured-logging-with-pino.md)                | Structured logging with pino                 | Accepted |
 
 ## Adding a decision
 
