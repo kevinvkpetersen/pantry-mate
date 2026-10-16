@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events';
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { closePool } from '../db/pool';
 import type * as ShutdownModule from './shutdown';
@@ -43,7 +43,7 @@ describe('shutdown', () => {
 
         registerShutdownCallbacks({ emitter, server });
 
-        emitter.emit('SIGTERM');
+        emitter.emit(SHUTDOWN_SIGNALS[0]);
 
         expect(isShuttingDown()).toBe(true);
 
@@ -106,5 +106,113 @@ describe('shutdown', () => {
         expect(closePool).toHaveBeenCalledTimes(1);
         expect(exitSpy).toHaveBeenCalledTimes(1);
         expect(exitSpy).toHaveBeenCalledWith(0);
+    });
+
+    it('should exit with code 1 if the server fails to close', async () => {
+        let finishServerClose: ClosableServerCallback | undefined;
+        server.close = vi.fn((callback: ClosableServerCallback) => {
+            finishServerClose = callback;
+        });
+
+        registerShutdownCallbacks({ emitter, server });
+
+        emitter.emit(SHUTDOWN_SIGNALS[0]);
+
+        expect(isShuttingDown()).toBe(true);
+
+        await vi.waitFor(() => expect(server.close).toHaveBeenCalledTimes(1));
+
+        expect(finishServerClose).toBeDefined();
+        finishServerClose?.(new Error('Server failed to close'));
+
+        await vi.waitFor(() => expect(exitSpy).toHaveBeenCalledTimes(1));
+        expect(exitSpy).toHaveBeenCalledWith(1);
+        expect(closePool).not.toHaveBeenCalled();
+    });
+
+    it('should exit with code 1 if the pool fails to close', async () => {
+        const pool = Promise.withResolvers<void>();
+        vi.mocked(closePool).mockReturnValueOnce(pool.promise);
+
+        registerShutdownCallbacks({ emitter, server });
+
+        emitter.emit(SHUTDOWN_SIGNALS[0]);
+
+        expect(isShuttingDown()).toBe(true);
+
+        await vi.waitFor(() => expect(closePool).toHaveBeenCalledTimes(1));
+        expect(server.close).toHaveBeenCalledTimes(1);
+        expect(exitSpy).not.toHaveBeenCalled();
+
+        pool.reject(new Error('Pool failed to close'));
+
+        await vi.waitFor(() => expect(exitSpy).toHaveBeenCalledTimes(1));
+        expect(exitSpy).toHaveBeenCalledWith(1);
+    });
+
+    describe('timing', () => {
+        beforeEach(() => {
+            vi.useFakeTimers();
+        });
+
+        afterEach(() => {
+            vi.useRealTimers();
+        });
+
+        it('should delay closing if a delay is configured', async () => {
+            const delay = 1000;
+            registerShutdownCallbacks({ emitter, server, delay });
+
+            emitter.emit(SHUTDOWN_SIGNALS[0]);
+
+            // Signal should be immediate
+            expect(isShuttingDown()).toBe(true);
+            expect(server.close).not.toHaveBeenCalled();
+
+            await vi.advanceTimersByTimeAsync(delay - 1);
+            expect(server.close).not.toHaveBeenCalled();
+
+            await vi.advanceTimersByTimeAsync(1);
+
+            expect(server.close).toHaveBeenCalledTimes(1);
+        });
+
+        it('should not delay closing if the configured delay is 0', () => {
+            registerShutdownCallbacks({ emitter, server, delay: 0 });
+
+            emitter.emit(SHUTDOWN_SIGNALS[0]);
+
+            expect(isShuttingDown()).toBe(true);
+            expect(server.close).toHaveBeenCalledTimes(1);
+        });
+
+        it('should exit with code 1 if the configured timeout is reached', async () => {
+            const timeout = 1000;
+            server.close = vi.fn();
+
+            registerShutdownCallbacks({ emitter, server, timeout });
+
+            emitter.emit(SHUTDOWN_SIGNALS[0]);
+
+            expect(isShuttingDown()).toBe(true);
+
+            await vi.advanceTimersByTimeAsync(timeout);
+
+            expect(exitSpy).toHaveBeenCalledTimes(1);
+            expect(exitSpy).toHaveBeenCalledWith(1);
+        });
+
+        it('should turn off the timeout when shutdown has succeeded', async () => {
+            const timeout = 1000;
+            registerShutdownCallbacks({ emitter, server, timeout });
+
+            emitter.emit(SHUTDOWN_SIGNALS[0]);
+
+            // Advance well past timeout
+            await vi.advanceTimersByTimeAsync(2 * timeout);
+
+            expect(exitSpy).toHaveBeenCalledTimes(1);
+            expect(exitSpy).toHaveBeenCalledWith(0);
+        });
     });
 });
