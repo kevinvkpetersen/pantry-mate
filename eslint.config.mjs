@@ -12,6 +12,16 @@ const expoConfig = require('eslint-config-expo/flat');
 export default defineConfig([
     globalIgnores(['**/dist', '**/.expo', '**/coverage']),
     {
+        files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
+        plugins: { 'simple-import-sort': simpleImportSort },
+        rules: {
+            'simple-import-sort/imports': 'error',
+            'simple-import-sort/exports': 'error',
+            'object-shorthand': 'error',
+            eqeqeq: 'error',
+        },
+    },
+    {
         files: ['**/*.{ts,tsx}'],
         extends: [
             js.configs.recommended,
@@ -22,21 +32,14 @@ export default defineConfig([
                 projectService: true,
             },
         },
-        plugins: { 'simple-import-sort': simpleImportSort },
         rules: {
-            'simple-import-sort/imports': 'error',
-            'simple-import-sort/exports': 'error',
             '@typescript-eslint/consistent-type-imports': 'error',
+            '@typescript-eslint/switch-exhaustiveness-check': 'error',
         },
     },
     {
         files: ['**/*.{js,mjs,cjs}'],
         extends: [js.configs.recommended, tseslint.configs.disableTypeChecked],
-        plugins: { 'simple-import-sort': simpleImportSort },
-        rules: {
-            'simple-import-sort/imports': 'error',
-            'simple-import-sort/exports': 'error',
-        },
     },
     {
         files: ['apps/mobile/**/*.{js,jsx,ts,tsx}'],
