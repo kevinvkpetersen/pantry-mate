@@ -1,0 +1,13 @@
+# Project files
+.git
+
+# Secrets
+.env
+
+#  Generated
+**/node_modules
+**/dist
+**/coverage
+
+# Non-docker code
+apps/mobile

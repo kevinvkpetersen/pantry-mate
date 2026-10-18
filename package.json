@@ -21,6 +21,7 @@
     },
     "lint-staged": {
         "*.{js,mjs,cjs,ts,tsx}": "eslint",
+        "Dockerfile": "docker build --check . -f",
         "*": "prettier --write --ignore-unknown"
     },
     "devDependencies": {

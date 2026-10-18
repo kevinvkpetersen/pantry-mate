@@ -1,6 +1,16 @@
 name: pantry-mate
 
 services:
+  api:
+    build:
+      dockerfile: apps/api/Dockerfile
+      context: .
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db
+    ports:
+      - '${API_PORT:-3000}:${API_PORT:-3000}'
+
   db:
     image: postgres:18
     restart: unless-stopped
