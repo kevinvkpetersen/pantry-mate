@@ -1,6 +1,6 @@
 # 0001. Postgres in Docker, with the API on the host
 
-- Status: Accepted
+- Status: Superseded by [0013](0013-api-in-a-container-during-development.md)
 - Date: 2026-10-08
 
 ## Context

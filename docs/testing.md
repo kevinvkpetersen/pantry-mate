@@ -4,7 +4,7 @@
 
 The API has two kinds of tests, set up as two Vitest projects in one config:
 
-- **Unit tests** sit beside the code they test (`src/**/*.test.ts`). They mock the repository and the database, using supertest for HTTP requests, and run in well under a second. The project sets dummy `POSTGRES_*` values, so they don't need a `.env`.
+- **Unit tests** sit beside the code they test (`src/**/*.test.ts`). They mock the repository and the database, using supertest for HTTP requests, and run in well under a second. The project sets dummy `DB_*` values, so they don't need a `.env`.
 - **Integration tests** live in `apps/api/test/`. They run the real repository and pool against a throwaway `postgres:18` container started with Testcontainers. The container starts once per run, is loaded with `docker/db/init/001-schema.sql` (not the seed data), and the table is emptied before each test. The files run one at a time, because they share the database. See [decision 0009](decisions/0009-testcontainers-for-integration-tests.md).
 
 | Command                          | What it runs                                 | Needs Docker |

@@ -20,23 +20,24 @@ An app to help manage the contents of your pantry and fridge.
 ```
 pantry-mate/
 ├── apps/
-│   ├── api/            # Express API (@pantry-mate/api)
-│   └── mobile/         # Expo app (@pantry-mate/mobile)
+│   ├── api/             # Express API (@pantry-mate/api)
+│   └── mobile/          # Expo app (@pantry-mate/mobile)
 ├── packages/
-│   └── types/          # Types shared by the API and the app (@pantry-mate/types)
+│   └── types/           # Types shared by the API and the app (@pantry-mate/types)
 ├── docker/
-│   └── db/init/        # SQL run when the database is first created (schema, seed data)
+│   └── db/init/         # SQL run when the database is first created (schema, seed data)
 ├── docs/
-│   └── decisions/      # Decision log: what was chosen, what was rejected, and why
-├── compose.yml         # Docker stack config (including Postgres)
-├── .env.example        # server and Docker configuration template
-├── .github/workflows/  # CI
-├── eslint.config.mjs   # one lint config for the whole repo
-├── AGENTS.md           # conventions for AI coding tools
+│   └── decisions/       # Decision log: what was chosen, what was rejected, and why
+├── compose.yml          # Docker stack, production-like (Postgres and the API)
+├── compose.override.yml # development additions, loaded automatically
+├── .env.example         # server and Docker configuration template
+├── .github/workflows/   # CI
+├── eslint.config.mjs    # one lint config for the whole repo
+├── AGENTS.md            # conventions for AI coding tools
 └── LICENSE
 ```
 
-The API and mobile app run on your machine. Postgres runs in Docker.
+Postgres and the API run in Docker, with the API reloading when its source changes. The mobile app runs on your machine.
 
 ## Prerequisites
 
@@ -50,9 +51,8 @@ Requires Node (the version in `.nvmrc`), Docker, and an Android emulator. The [g
 
 ```bash
 npm install
-cp .env.example .env            # then set POSTGRES_PASSWORD
-npm start                       # Postgres in Docker
-npm run -w apps/api dev         # API on http://localhost:3000
+cp .env.example .env            # then set DB_PASSWORD
+npm start                       # Postgres and the API in Docker, API on http://localhost:3000
 npm run -w apps/mobile start    # Expo dev server, press `a` for the emulator
 ```
 

@@ -2,20 +2,38 @@
 
 ## Server (`.env` at the repo root)
 
-| Variable            | Required | Default     | Notes                                                          |
-| ------------------- | -------- | ----------- | -------------------------------------------------------------- |
-| `POSTGRES_USER`     | Yes      |             | Database user                                                  |
-| `POSTGRES_PASSWORD` | Yes      |             | Database password. Special characters are URL-encoded.         |
-| `POSTGRES_DB`       | Yes      |             | Database name                                                  |
-| `POSTGRES_PORT`     | Yes      |             | Port the database is published on (1-65535)                    |
-| `POSTGRES_HOST`     | No       | `localhost` | Database host. A container would use the Compose service name. |
-| `API_PORT`          | No       | `3000`      | Port the API listens on (1-65535)                              |
+| Variable      | Required | Default     | Notes                                                                                                                        |
+| ------------- | -------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `DB_USER`     | Yes      |             | Database user                                                                                                                |
+| `DB_PASSWORD` | Yes      |             | Database password                                                                                                            |
+| `DB_NAME`     | Yes      |             | Database name                                                                                                                |
+| `DB_PORT`     | Yes      |             | The database's port on your machine (1-65535). Compose publishes Postgres on it, and the API on your machine connects to it. |
+| `DB_HOST`     | No       | `localhost` | Database host for the API on your machine                                                                                    |
+| `API_PORT`    | No       | `3000`      | Port the API listens on (1-65535)                                                                                            |
 
-Docker Compose reads the same `POSTGRES_*` values to create the database. The API checks every variable when it starts, and exits with an error message naming the variable if one is missing or malformed.
+Docker Compose passes `DB_USER`, `DB_PASSWORD` and `DB_NAME` to Postgres to create the database. The init scripts only run on an empty data volume, so changing them later needs `npm run db:reset`. The API checks every variable when it starts, and exits with an error message naming the variable if one is missing or malformed.
+
+### In a container
+
+Compose doesn't load `.env` into the `api` container. Each variable the API needs is listed under `environment:` in `compose.yml`, either taken from `.env` or fixed by the Compose setup:
+
+| Variable                            | Value in the container                                        | Source                                                          |
+| ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- |
+| `DB_HOST`                           | `db`, the database's service name                             | Fixed in `compose.yml`                                          |
+| `DB_PORT`                           | `5432`, Postgres's port inside the Compose network            | Fixed in `compose.yml`                                          |
+| `DB_USER`, `DB_PASSWORD`, `DB_NAME` | The `.env` values                                             | `.env`                                                          |
+| `API_PORT`                          | The `.env` value, or `3000`                                   | `.env`, with a default in `compose.yml`                         |
+| `LOG_LEVEL`                         | The `.env` value, or `info`                                   | `.env`, with a default in `compose.yml`                         |
+| `SHUTDOWN_DRAIN_DELAY_MS`           | The `.env` value, or `2000`. Always `0` in the dev container. | `.env`, with a default in `compose.yml`; `compose.override.yml` |
+| `SHUTDOWN_TIMEOUT_MS`               | The `.env` value, or `6000`                                   | `.env`, with a default in `compose.yml`                         |
+
+The optional values are left out of `.env.example`, so the API on your machine uses the defaults in `src/config` and the production-like stack uses the defaults in `compose.yml`. Setting one in `.env` changes both. When you add a variable the API reads, add it to `.env.example` and to the `api` service's `environment:` list, or the container won't see it.
+
+The API port is published on all network interfaces, so a phone on your local network can reach it, and so can other devices on that network. The debugger port (9229) is published on `127.0.0.1` only.
 
 ### Logging
 
-The API writes its logs as JSON, one object per line, to stdout. `npm run -w apps/api dev` pipes them through `pino-pretty` to make them readable. Successful `/health` requests aren't logged, so frequent healthchecks don't bury everything else. See [decision 0012](decisions/0012-structured-logging-with-pino.md).
+The API writes its logs as JSON, one object per line, to stdout. `npm run -w apps/api dev` pipes them through `pino-pretty` to make them readable, and `docker compose logs -f api | npx pino-pretty` does the same for the container. Successful `/health` requests aren't logged, so frequent healthchecks don't bury everything else. See [decision 0012](decisions/0012-structured-logging-with-pino.md).
 
 | Variable    | Required | Default | Notes                                                                                           |
 | ----------- | -------- | ------- | ----------------------------------------------------------------------------------------------- |

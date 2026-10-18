@@ -13,6 +13,23 @@ The variable wasn't picked up. It must be named `EXPO_PUBLIC_API_URL`, the file 
 **React Native DevTools fails to launch on Linux.**
 The debugger is a separate Electron app and doesn't affect the build. Console output still appears in the Expo terminal, and the dev menu (`m`) works without it. Two errors have been seen: a sandbox permissions error (the helper binary must be owned by root with mode 4755), and a launch failure caused by spaces in the cache path. Neither blocks development.
 
+## The API container
+
+**`npm start` fails with "dependency failed to start".**
+The `api` service waits until the `db` service's healthcheck passes. Run `docker compose ps` to see the database's health, and `docker compose logs db` to see why it isn't healthy. The database problems below, such as an old data volume, show up here first.
+
+**"Cannot find module" after adding a dependency.**
+The container's `node_modules` comes from the image, not from your machine. Run `npm start` again, which rebuilds the image. The same applies after changing `package.json`.
+
+**Code changes don't restart the API.**
+Only `apps/api/src` and `packages/` are mounted into the container. Changes elsewhere need a rebuild. If changes in those folders aren't picked up either, check that the repo is on your main disk (see the Docker Desktop note under "The database").
+
+**Breakpoints show as unbound.**
+The attach configuration maps `/pantry-mate` in the container to the workspace. `localRoot` must be `${workspaceFolder}`, because VS Code doesn't resolve `.` relative to the workspace. Running `.scripts` in the Debug Console lists each loaded script and the local file it maps to.
+
+**Port 3000 is already in use.**
+The API is probably running both in the container and on your machine. Stop one: `docker compose stop api`, or stop `npm run -w apps/api dev`.
+
 ## The database
 
 **No tables in the database.**
