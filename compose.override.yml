@@ -2,6 +2,8 @@ services:
   api:
     build:
       target: dev
+    environment:
+      SHUTDOWN_DRAIN_DELAY_MS: 0
     volumes:
       - ./apps/api/src:/pantry-mate/apps/api/src
       - ./packages:/pantry-mate/packages

@@ -4,7 +4,11 @@ import { config } from '../config';
 import { logger } from '../logger';
 
 export const pool = new Pool({
-    connectionString: config.DATABASE_URL,
+    host: config.DB_HOST,
+    port: config.DB_PORT,
+    user: config.DB_USER,
+    password: config.DB_PASSWORD,
+    database: config.DB_NAME,
 });
 
 /* v8 ignore start -- @preserve */ // only runs when idle connection fails, which tests don't trigger

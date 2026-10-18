@@ -54,7 +54,11 @@ const logLevel = (fallback: LevelWithSilent): LevelWithSilent => {
 
 export const config = {
     API_PORT: port('API_PORT', 3000),
-    DATABASE_URL: `postgres://${encodeURIComponent(required('POSTGRES_USER'))}:${encodeURIComponent(required('POSTGRES_PASSWORD'))}@${optional('POSTGRES_HOST', 'localhost')}:${port('POSTGRES_PORT')}/${encodeURIComponent(required('POSTGRES_DB'))}`,
+    DB_HOST: optional('DB_HOST', 'localhost'),
+    DB_PORT: port('DB_PORT'),
+    DB_USER: required('DB_USER'),
+    DB_PASSWORD: required('DB_PASSWORD'),
+    DB_NAME: required('DB_NAME'),
     SHUTDOWN_DRAIN_DELAY_MS: numeric('SHUTDOWN_DRAIN_DELAY_MS', 0),
     SHUTDOWN_TIMEOUT_MS: numeric('SHUTDOWN_TIMEOUT_MS', 8000),
     LOG_LEVEL: logLevel('info'),
