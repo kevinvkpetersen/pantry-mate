@@ -8,13 +8,15 @@
         "packages/*"
     ],
     "scripts": {
-        "db:reset": "docker compose down -v && docker compose up -d db",
+        "db:reset": "docker compose down -v && npm start",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "lint": "npm run lint --workspaces --if-present",
         "lint:fix": "npm run lint:fix --workspaces --if-present",
+        "logs": "docker compose logs -f api | pino-pretty",
         "prepare": "husky",
-        "start": "docker compose up -d",
+        "start": "docker compose up -d --build",
+        "start:prod": "docker compose -f compose.yml up -d --build",
         "stop": "docker compose down",
         "test": "npm run test --workspaces --if-present",
         "typecheck": "npm run typecheck --workspaces --if-present"

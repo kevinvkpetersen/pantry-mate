@@ -5,11 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run API",
-            "type": "node-terminal",
-            "request": "launch",
-            "cwd": "${workspaceFolder}/apps/api",
-            "command": "npm run dev"
+            "name": "Attach to API",
+            "request": "attach",
+            "type": "node",
+            "port": 9229,
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/pantry-mate",
+            "skipFiles": ["<node_internals>/**"],
+            "restart": true
         }
     ]
 }

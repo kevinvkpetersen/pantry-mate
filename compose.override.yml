@@ -1,0 +1,9 @@
+services:
+  api:
+    build:
+      target: dev
+    volumes:
+      - ./apps/api/src:/pantry-mate/apps/api/src
+      - ./packages:/pantry-mate/packages
+    ports:
+      - '127.0.0.1:9229:9229'
