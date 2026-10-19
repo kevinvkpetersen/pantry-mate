@@ -49,6 +49,9 @@ The API checks its environment variables when it starts and names the one that's
 
 ## Tooling
 
+**`npm install` fails with `EBADENGINE` or `notsup Not compatible with your version of node/npm`.**
+The repo's `.npmrc` sets `engine-strict`, so npm refuses to install on a Node or npm older than the root `engines` field allows (Node 24, npm 11). Run `nvm use` and try again. Shells that don't load nvm, such as some editor tasks and scripts, can pick up an older system Node, so check `node -v`. Don't use `--force`: an older npm runs every dependency's install script, and it rewrites `package-lock.json`.
+
 **npm lists packages whose install scripts were skipped.**
 npm doesn't run dependencies' install scripts unless they're approved (see [decision 0014](decisions/0014-dependency-install-scripts-blocked-by-default.md)). That's expected, and the listed packages work without them. If a package fails at runtime because its script didn't run, check what the script does, then approve that package with `npm install-scripts approve <package>`.
 
