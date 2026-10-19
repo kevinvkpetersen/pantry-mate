@@ -30,7 +30,7 @@ A step-by-step setup, from a fresh clone to the app running in an emulator.
 
     On the first run, Postgres executes the scripts in `docker/db/init/` in alphabetical order. They only run when the data volume is empty, so after changing them, run `npm run db:reset`.
 
-4. **Check the API.** It restarts by itself when you save a file in `apps/api/src` or `packages/`. Check that it works with `curl http://localhost:3000/health` (adjust the port if you changed `API_PORT`). It returns `{"status":"ok"}` when the API can reach the database. A `503` with `{"status":"unavailable"}` means the API is running but can't reach Postgres, so check that the database from step 3 is up and that `.env` matches it. To see the seed data, try `curl http://localhost:3000/items`.
+4. **Check the API.** It restarts by itself when you save a file in `apps/api/src` or `packages/`. Check that it works with `curl http://localhost:3000/health` (adjust the port if you changed `API_PORT`). It returns `{"status":"ok"}` when the API can reach the database. A `503` with `{"status":"unavailable"}` means the API is running but can't reach Postgres, so check that the database from step 3 is up and that `.env` matches it. To see the seed data, try `curl http://localhost:3000/items`. `docker compose ps` also shows both containers' health.
 
 5. **Check the app config.** `apps/mobile/.env.development` should contain the API address as the Android emulator sees it. The emulator reaches your computer at `10.0.2.2`, not `localhost`. If the file is missing, create it:
 

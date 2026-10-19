@@ -18,6 +18,9 @@ The debugger is a separate Electron app and doesn't affect the build. Console ou
 **`npm start` fails with "dependency failed to start".**
 The `api` service waits until the `db` service's healthcheck passes. Run `docker compose ps` to see the database's health, and `docker compose logs db` to see why it isn't healthy. The database problems below, such as an old data volume, show up here first.
 
+**`docker compose ps` shows the API as unhealthy.**
+The healthcheck calls `/health` inside the container, so unhealthy means that request failed or returned an error status. `docker compose logs api` shows why: a "Database health check failed" line means the API can't reach Postgres, and no "Listening" line means it never started. It is also unhealthy for a moment during a shutdown, while `/health` returns `503 shutting_down` on purpose.
+
 **"Cannot find module" after adding a dependency.**
 The container's `node_modules` comes from the image, not from your machine. Run `npm start` again, which rebuilds the image. The same applies after changing `package.json`.
 
@@ -45,6 +48,9 @@ Postgres 18 images store data at `/var/lib/postgresql`, not `/var/lib/postgresql
 The API checks its environment variables when it starts and names the one that's missing or malformed. Compare `.env` with `.env.example`, and see the table in [configuration.md](configuration.md).
 
 ## Tooling
+
+**npm lists packages whose install scripts were skipped.**
+npm doesn't run dependencies' install scripts unless they're approved (see [decision 0014](decisions/0014-dependency-install-scripts-blocked-by-default.md)). That's expected, and the listed packages work without them. If a package fails at runtime because its script didn't run, check what the script does, then approve that package with `npm install-scripts approve <package>`.
 
 **VS Code shows lint or type errors that the terminal doesn't.**
 The ESLint and TypeScript servers cache `node_modules` and go stale after installs or config changes. Restart both from the Command Palette: "ESLint: Restart ESLint Server" and "TypeScript: Restart TS Server". If `npm run lint` and `npm run typecheck` are clean, trust them.

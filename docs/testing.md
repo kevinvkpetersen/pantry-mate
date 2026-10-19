@@ -22,15 +22,17 @@ The first integration run is slower while Docker pulls the Postgres image.
 
 ## Before a commit
 
-A pre-commit hook (Husky and lint-staged) runs ESLint on staged code files and Prettier on staged files. The lint rules are type-aware, and they ban `any`, including `any` that leaks in from untyped library calls.
+A pre-commit hook (Husky and lint-staged) runs ESLint on staged code files, Prettier on staged files, and `docker build --check` on staged Dockerfiles. The lint rules are type-aware, and they ban `any`, including `any` that leaks in from untyped library calls.
 
 ## On every push and pull request
 
-GitHub Actions runs, in order:
+GitHub Actions runs two jobs in parallel. The `check` job runs, in order:
 
 1. `npm run typecheck`
 2. `npm run lint`
 3. `npm run format:check`
 4. `npm test`
 
-The workflow is in `.github/workflows/ci.yml`. It installs with `npm ci`, so a lockfile that disagrees with `package.json` fails the build. CI starts from a clean checkout, which catches things that only work on your machine, such as gitignored generated files.
+The `docker` job lints the API's Dockerfile (`docker build --check`, which fails on any warning, as the pre-commit hook does) and then builds the `prod` image.
+
+The workflow is in `.github/workflows/ci.yml`. The `check` job installs with `npm ci`, so a lockfile that disagrees with `package.json` fails the build. CI starts from a clean checkout, which catches things that only work on your machine, such as gitignored generated files.
