@@ -19,9 +19,12 @@ jobs:
     env:
       HUSKY: 0
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          # The jobs never push, so later steps don't need the token.
+          persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -31,3 +34,17 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npm test
+
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # The jobs never push, so later steps don't need the token.
+          persist-credentials: false
+
+      # Fails on any Dockerfile lint warning, like the pre-commit hook does.
+      - run: docker build --check -f apps/api/Dockerfile .
+
+      - run: docker build --target prod -t pantry-mate-api:ci -f apps/api/Dockerfile .
