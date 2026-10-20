@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { listItems } from '../src/repositories/items';
 import { clearItems, insertItem } from './utils/db';
 
-const exampleItems: Record<string, NewPantryItem> = {
+const exampleItems = {
     rice: {
         name: 'Rice',
         quantity: 1,
@@ -17,7 +17,7 @@ const exampleItems: Record<string, NewPantryItem> = {
         unit: null,
         expiresOn: null,
     },
-};
+} satisfies Record<string, NewPantryItem>;
 
 describe('items repository', () => {
     beforeEach(async () => {

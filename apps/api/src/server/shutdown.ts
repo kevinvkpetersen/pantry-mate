@@ -3,10 +3,10 @@ import type EventEmitter from 'node:events';
 import { closePool } from '../db/pool';
 import { logger } from '../logger';
 
-export const SHUTDOWN_SIGNALS: readonly NodeJS.Signals[] = [
+export const SHUTDOWN_SIGNALS = [
     'SIGTERM',
     'SIGINT',
-];
+] as const satisfies readonly NodeJS.Signals[];
 
 let shutdownSignal: NodeJS.Signals | undefined;
 

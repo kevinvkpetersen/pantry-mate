@@ -50,7 +50,7 @@ npx expo install --fix          # (in apps/mobile) fix incompatible package vers
 
 # Code conventions
 
-- TypeScript strict mode. `any` is banned, including `any` that leaks in from untyped library calls, and ESLint enforces it with type-aware rules.
+- TypeScript strict mode, plus `noUncheckedIndexedAccess` in every workspace: index reads (`arr[i]`, `Record<string, T>` lookups) include `undefined`. Prefer tighter types (`as const`, `satisfies`) over non-null assertions. `any` is banned, including `any` that leaks in from untyped library calls, and ESLint enforces it with type-aware rules.
 - Import types from the shared package with `import type { ... } from '@pantry-mate/types'`.
 - Imports are sorted by `eslint-plugin-simple-import-sort`. Run `npm run lint:fix` rather than reordering by hand.
 - The API is layered: routes (HTTP only) call repositories (all SQL), which use the single `pg` Pool in `db/pool.ts`. Routes contain no SQL.
