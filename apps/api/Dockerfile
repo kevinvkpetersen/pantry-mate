@@ -32,7 +32,7 @@ FROM build-deps AS build
 COPY apps/api apps/api
 COPY packages packages
 
-RUN npm run build -w apps/api
+RUN npm run build
 
 ########################################
 
@@ -46,6 +46,8 @@ FROM base AS prod
 
 COPY --from=prod-deps /pantry-mate/node_modules ./node_modules
 COPY --from=build /pantry-mate/apps/api/dist ./apps/api/dist
+COPY --from=build /pantry-mate/packages/types/dist ./packages/types/dist
+COPY --from=build /pantry-mate/packages/types/package.json ./packages/types/package.json
 
 ENV NODE_ENV=production
 USER node
