@@ -1,12 +1,10 @@
 {
+    "extends": ["@tsconfig/node24/tsconfig.json", "../../tsconfig.base.json"],
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "dist",
-        "strict": true,
-        "noUncheckedIndexedAccess": true,
-        "module": "ESNext",
-        "moduleResolution": "Bundler",
-        "declaration": true
+        "declaration": true,
+        "types": []
     },
     "include": ["src"]
 }

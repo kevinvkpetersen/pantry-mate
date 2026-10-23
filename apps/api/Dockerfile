@@ -31,6 +31,7 @@ FROM build-deps AS build
 
 COPY apps/api apps/api
 COPY packages packages
+COPY tsconfig.base.json .
 
 RUN npm run build
 

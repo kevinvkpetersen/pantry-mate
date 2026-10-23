@@ -1,8 +1,6 @@
 {
-    "extends": "expo/tsconfig.base",
+    "extends": ["expo/tsconfig.base", "../../tsconfig.base.json"],
     "compilerOptions": {
-        "strict": true,
-        "noUncheckedIndexedAccess": true,
         "customConditions": ["react-native", "@pantry-mate/source"],
         "paths": {
             "@/*": ["./src/*"],
