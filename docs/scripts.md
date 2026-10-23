@@ -13,6 +13,7 @@ Run these from the repo root. Commands that work across the repo run in every wo
 | `npm run typecheck`              | `tsc --noEmit` in every workspace                                                                      |
 | `npm run lint`                   | ESLint in every workspace                                                                              |
 | `npm run lint:fix`               | ESLint with autofix in every workspace                                                                 |
+| `npm run build`                  | Build every workspace that has a build: the API and `@pantry-mate/types`                               |
 | `npm run format`                 | Format the repo with Prettier                                                                          |
 | `npm run format:check`           | Check formatting without changing files                                                                |
 | `npm run -w apps/api dev`        | API on your machine in watch mode, with logs formatted by `pino-pretty`. Stop the API container first. |

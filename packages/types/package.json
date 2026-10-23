@@ -3,10 +3,18 @@
     "version": "0.1.0",
     "private": true,
     "license": "UNLICENSED",
-    "types": "src/index.ts",
+    "exports": {
+        "@pantry-mate/source": "./src/index.ts",
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+    },
     "scripts": {
+        "build": "tsc",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "zod": "^4.6.7"
     }
 }

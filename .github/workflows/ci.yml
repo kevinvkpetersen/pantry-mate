@@ -48,3 +48,25 @@ jobs:
       - run: docker build --check -f apps/api/Dockerfile .
 
       - run: docker build --target prod -t pantry-mate-api:ci -f apps/api/Dockerfile .
+
+      # Starts the image to catch problems a build can't, such as a package the
+      # compiled code can't load. The pool connects lazily, so no database is needed.
+      - name: Smoke test the prod image
+        run: |
+          docker run -d --name api-smoke \
+            -e DB_HOST=db.invalid -e DB_PORT=5432 \
+            -e DB_USER=ci -e DB_PASSWORD=ci -e DB_NAME=ci \
+            pantry-mate-api:ci
+          for _ in $(seq 1 15); do
+            if docker logs api-smoke 2>&1 | grep -q '"msg":"Listening"'; then
+              echo "API started"
+              exit 0
+            fi
+            if [ "$(docker inspect -f '{{.State.Running}}' api-smoke)" != "true" ]; then
+              break
+            fi
+            sleep 1
+          done
+          echo "API did not start"
+          docker logs api-smoke
+          exit 1

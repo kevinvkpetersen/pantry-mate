@@ -8,6 +8,7 @@
         "packages/*"
     ],
     "scripts": {
+        "build": "npm run build --workspaces --if-present",
         "db:reset": "docker compose down -v && npm start",
         "format": "prettier --write .",
         "format:check": "prettier --check .",

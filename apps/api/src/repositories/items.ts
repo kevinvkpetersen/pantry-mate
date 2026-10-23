@@ -1,9 +1,9 @@
-import type { PantryItem } from '@pantry-mate/types';
+import { type PantryItem, pantryItemSchema } from '@pantry-mate/types';
 
 import { pool } from '../db/pool';
 
 export const listItems = async (): Promise<PantryItem[]> => {
-    const { rows } = await pool.query<PantryItem>(`
+    const { rows } = await pool.query(`
         SELECT 
             id,
             name,
@@ -13,5 +13,5 @@ export const listItems = async (): Promise<PantryItem[]> => {
         FROM items
     `);
 
-    return rows;
+    return pantryItemSchema.array().parse(rows);
 };
