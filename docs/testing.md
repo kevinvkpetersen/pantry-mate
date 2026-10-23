@@ -35,6 +35,6 @@ GitHub Actions runs two jobs in parallel. The `check` job runs, in order:
 3. `npm run format:check`
 4. `npm test`
 
-The `docker` job lints the API's Dockerfile (`docker build --check`, which fails on any warning, as the pre-commit hook does) and then builds the `prod` image.
+The `docker` job lints the API's Dockerfile (`docker build --check`, which fails on any warning, as the pre-commit hook does) then builds the `prod` image and starts it, failing if the API doesn't log "Listening" within 15 seconds. The start check catches what a build can't, such as a package the compiled code can't load.
 
 The workflow is in `.github/workflows/ci.yml`. The `check` job installs with `npm ci`, so a lockfile that disagrees with `package.json` fails the build. CI starts from a clean checkout, which catches things that only work on your machine, such as gitignored generated files.
