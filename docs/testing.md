@@ -16,6 +16,8 @@ The API has two kinds of tests, set up as two Vitest projects in one config:
 
 The first integration run is slower while Docker pulls the Postgres image.
 
+Both projects load `@pantry-mate/types` from its TypeScript source, through the `@pantry-mate/source` export condition set in `ssr.resolve.conditions` in `vitest.config.mts`. The tests don't need the package built.
+
 - `npm test` measures both projects together and prints one coverage table. An HTML report is written to `apps/api/coverage`.
 - New code should be fully covered. If a file or line can't be meaningfully tested, exclude it deliberately and record the reason next to the exclusion, in the coverage config or in a `v8 ignore` comment. `index.ts` files are excluded, because they only wire things together, so keep logic out of them.
 - Code that only a real Postgres can verify, such as SQL and the `::float8` and date conversions, is covered by integration tests rather than by mocking `pg`.

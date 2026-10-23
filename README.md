@@ -11,6 +11,7 @@ An app to help manage the contents of your pantry and fridge.
 - **Mobile:** Expo / React Native
 - **API:** Node.js, Express 5, TypeScript, `pg`
 - **Database:** Postgres, run in Docker
+- **Validation:** Zod schemas, shared by the API and the app
 - **Testing:** Vitest, supertest, v8 coverage
 - **Tooling:** npm workspaces, ESLint (typescript-eslint, type-aware), Prettier, Husky + lint-staged
 - **CI:** GitHub Actions
@@ -23,7 +24,7 @@ pantry-mate/
 │   ├── api/             # Express API (@pantry-mate/api)
 │   └── mobile/          # Expo app (@pantry-mate/mobile)
 ├── packages/
-│   └── types/           # Types shared by the API and the app (@pantry-mate/types)
+│   └── types/           # Schemas and types shared by the API and the app (@pantry-mate/types)
 ├── docker/
 │   └── db/init/         # SQL run when the database is first created (schema, seed data)
 ├── docs/
@@ -33,6 +34,7 @@ pantry-mate/
 ├── .env.example         # server and Docker configuration template
 ├── .github/workflows/   # CI
 ├── eslint.config.mjs    # one lint config for the whole repo
+├── tsconfig.base.json   # TypeScript rules shared by every workspace
 ├── AGENTS.md            # conventions for AI coding tools
 └── LICENSE
 ```

@@ -1,6 +1,6 @@
 # 0003. Shared types package without a build step
 
-- Status: Accepted
+- Status: Superseded by [0015](0015-zod-schemas-in-the-shared-types-package.md)
 - Date: 2026-10-09
 
 ## Context

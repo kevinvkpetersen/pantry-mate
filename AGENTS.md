@@ -3,7 +3,9 @@
 - npm workspaces monorepo:
     - `apps/api` is a Node.js + Express + TypeScript backend.
     - `apps/mobile` is an Expo / React Native app.
-    - `packages/types` is `@pantry-mate/types`, the types shared by both apps (e.g. `PantryItem`).
+    - `packages/types` is `@pantry-mate/types`, the Zod schemas shared by both apps and the types inferred from them (e.g. `pantryItemSchema` and `PantryItem`).
+- `@pantry-mate/types` has a build (`tsc`, CommonJS to `packages/types/dist`), which production loads. Its `exports` also has a `@pantry-mate/source` condition pointing at `src/index.ts`. The dev tools turn it on (`tsx --conditions`, TypeScript `customConditions`, Vitest `ssr.resolve.conditions`), so development, typecheck and tests read the source and never need `dist`. Any new consumer of the package needs the same setting.
+- `tsconfig.base.json` holds the project-wide compiler rules. Each workspace extends it together with its environment's base (`@tsconfig/node24` or `expo/tsconfig.base`).
 - Postgres and the API run in Docker Compose. `compose.yml` is the production-like stack (the API's `prod` image). The committed `compose.override.yml` is loaded automatically and makes it the dev stack: the API's `dev` image, `apps/api/src` and `packages` mounted from the host, `tsx watch`, and the inspector on `127.0.0.1:9229`. Schema and seed scripts live in `docker/db/init/`. The mobile app runs on the host.
 - The API image is built from the repo root (`-f apps/api/Dockerfile .`). Changes to dependencies, `package.json` or `tsconfig.json` need a rebuild (`npm start` again), because only the source folders are mounted.
 - This is not a Python project.
@@ -28,6 +30,7 @@ npm run lint:fix                # eslint --fix in every workspace
 npm run format                  # prettier --write
 npm run format:check            # prettier --check
 npm test                        # tests in every workspace, with coverage (needs Docker)
+npm run build                   # build every workspace that has a build (the API and @pantry-mate/types)
 npm start                       # dev stack: docker compose up -d --build
 npm run start:prod              # production-like stack: compose.yml only, rebuilt
 npm run logs                    # follow the API container's logs through pino-pretty
@@ -51,10 +54,10 @@ npx expo install --fix          # (in apps/mobile) fix incompatible package vers
 # Code conventions
 
 - TypeScript strict mode, plus `noUncheckedIndexedAccess` in every workspace: index reads (`arr[i]`, `Record<string, T>` lookups) include `undefined`. Prefer tighter types (`as const`, `satisfies`) over non-null assertions. `any` is banned, including `any` that leaks in from untyped library calls, and ESLint enforces it with type-aware rules.
-- Import types from the shared package with `import type { ... } from '@pantry-mate/types'`.
+- Define shared data shapes as Zod schemas in `@pantry-mate/types` and infer the types from them (`z.infer`). Import types with `import type` (or an inline `type` modifier), so code that only needs types doesn't load Zod at runtime. Import schemas as values only where they're used to validate.
 - Imports are sorted by `eslint-plugin-simple-import-sort`. Run `npm run lint:fix` rather than reordering by hand.
 - The API is layered: routes (HTTP only) call repositories (all SQL), which use the single `pg` Pool in `db/pool.ts`. Routes contain no SQL.
-- Repositories return the shared types. Convert at the boundary: `numeric` columns are cast with `::float8`, and `date` columns are returned as `YYYY-MM-DD` strings.
+- Repositories return the shared types, parsing rows with the shared schemas (e.g. `pantryItemSchema.array().parse(rows)`). Convert at the boundary: `numeric` columns are cast with `::float8`, and `date` columns are returned as `YYYY-MM-DD` strings.
 
 # Mobile (Expo)
 

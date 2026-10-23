@@ -8,7 +8,7 @@ Short records of the significant technical decisions in this project: what was c
 | ------------------------------------------------------------- | --------------------------------------------- | ------------------ |
 | [0001](0001-postgres-in-docker-with-the-api-on-the-host.md)   | Postgres in Docker, with the API on the host  | Superseded by 0013 |
 | [0002](0002-layered-api-with-plain-pg.md)                     | Layered API with plain `pg`                   | Accepted           |
-| [0003](0003-shared-types-package-without-a-build-step.md)     | Shared types package without a build step     | Accepted           |
+| [0003](0003-shared-types-package-without-a-build-step.md)     | Shared types package without a build step     | Superseded by 0015 |
 | [0004](0004-monorepo-with-npm-workspaces.md)                  | Monorepo with npm workspaces                  | Accepted           |
 | [0005](0005-expo-over-bare-react-native.md)                   | Expo over bare React Native                   | Accepted           |
 | [0006](0006-eslint-pinned-to-version-9.md)                    | ESLint pinned to version 9                    | Accepted           |
@@ -20,6 +20,7 @@ Short records of the significant technical decisions in this project: what was c
 | [0012](0012-structured-logging-with-pino.md)                  | Structured logging with pino                  | Accepted           |
 | [0013](0013-api-in-a-container-during-development.md)         | API in a container during development         | Accepted           |
 | [0014](0014-dependency-install-scripts-blocked-by-default.md) | Dependency install scripts blocked by default | Accepted           |
+| [0015](0015-zod-schemas-in-the-shared-types-package.md)       | Zod schemas in the shared types package       | Accepted           |
 
 ## Adding a decision
 
