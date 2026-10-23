@@ -38,7 +38,7 @@ RUN npm run build
 
 FROM build-deps AS dev
 
-CMD ["npx", "tsx", "watch", "--inspect=0.0.0.0:9229", "apps/api/src/index.ts"]
+CMD ["npx", "tsx", "watch", "--conditions=@pantry-mate/source", "--inspect=0.0.0.0:9229", "apps/api/src/index.ts"]
 
 ########################################
 

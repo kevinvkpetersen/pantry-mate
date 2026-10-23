@@ -38,4 +38,14 @@ export default defineConfig({
             reporter: ['text', 'html'],
         },
     },
+    ssr: {
+        resolve: {
+            conditions: [
+                '@pantry-mate/source',
+                'module',
+                'node',
+                'development|production',
+            ],
+        },
+    },
 });

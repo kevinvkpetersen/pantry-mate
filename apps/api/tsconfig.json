@@ -1,9 +1,9 @@
 {
-    // Visit https://aka.ms/tsconfig to read more about this file
     "extends": "@tsconfig/node24/tsconfig.json",
     "compilerOptions": {
-        "outDir": "./dist",
-        "noUncheckedIndexedAccess": true
+        "outDir": "dist",
+        "noUncheckedIndexedAccess": true,
+        "customConditions": ["@pantry-mate/source"]
     },
     "include": ["**/*.ts"],
     "exclude": ["dist"]
