@@ -45,4 +45,20 @@ describe('Items', () => {
         expect(item?.unit).toBeNull();
         expect(item?.expiresOn).toBeNull();
     });
+
+    it('rejects an item without a location', async () => {
+        await expect(
+            insertItem({
+                ...ITEMS_TEST_DATA.rice,
+                // @ts-expect-error -- checks that the database also rejects what the type forbids
+                locationId: null,
+            })
+        ).rejects.toMatchObject({ code: '23502' }); // not_null_violation
+    });
+
+    it('rejects an item whose location does not exist', async () => {
+        await expect(
+            insertItem({ ...ITEMS_TEST_DATA.rice, locationId: 999 })
+        ).rejects.toMatchObject({ code: '23503' }); // foreign_key_violation
+    });
 });
