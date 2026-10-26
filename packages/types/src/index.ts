@@ -13,3 +13,14 @@ export const pantryItemSchema = z.object({
     id: z.number(),
 });
 export type PantryItem = z.infer<typeof pantryItemSchema>;
+
+export const newLocationSchema = z.object({
+    name: z.string(),
+});
+export type NewLocation = z.infer<typeof newLocationSchema>;
+
+export const locationSchema = z.object({
+    ...newLocationSchema.shape,
+    id: z.number(),
+});
+export type Location = z.infer<typeof locationSchema>;

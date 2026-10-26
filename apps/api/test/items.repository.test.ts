@@ -2,7 +2,7 @@ import type { NewPantryItem } from '@pantry-mate/types';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { listItems } from '../src/repositories/items';
-import { clearItems, insertItem } from './utils/db';
+import { clearDatabase, insertItem } from './utils/db';
 
 const exampleItems = {
     rice: {
@@ -19,9 +19,9 @@ const exampleItems = {
     },
 } satisfies Record<string, NewPantryItem>;
 
-describe('items repository', () => {
+describe('Items', () => {
     beforeEach(async () => {
-        await clearItems();
+        await clearDatabase();
     });
 
     it('returns an empty list when there are no items', async () => {

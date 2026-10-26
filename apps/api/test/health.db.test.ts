@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { isDatabaseAlive } from '../src/db/health';
 import { getUnusedPort } from './utils/pool';
 
-describe('database health', () => {
+describe('DB Health', () => {
     it('should return true if the database is reachable', async () => {
         expect(await isDatabaseAlive()).toBe(true);
     });

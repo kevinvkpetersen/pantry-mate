@@ -1,4 +1,4 @@
-import type { NewPantryItem } from '@pantry-mate/types';
+import type { NewLocation, NewPantryItem } from '@pantry-mate/types';
 import { Pool } from 'pg';
 import { inject } from 'vitest';
 
@@ -14,8 +14,13 @@ const testPool = new Pool({
 
 export const closeTestPool = () => testPool.end();
 
-export const clearItems = () =>
-    testPool.query('TRUNCATE items RESTART IDENTITY');
+export const clearDatabase = () =>
+    testPool.query(`
+        TRUNCATE
+            items,
+            locations
+        RESTART IDENTITY
+    `);
 
 export const insertItem = ({
     name,
@@ -27,3 +32,6 @@ export const insertItem = ({
         'INSERT INTO items (name, quantity, unit, expires_on) VALUES ($1, $2, $3, $4)',
         [name, quantity, unit, expiresOn]
     );
+
+export const insertLocation = ({ name }: NewLocation) =>
+    testPool.query('INSERT INTO locations (name) VALUES ($1)', [name]);
