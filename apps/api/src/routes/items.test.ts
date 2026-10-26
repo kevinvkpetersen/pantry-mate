@@ -19,11 +19,19 @@ describe('Items', () => {
             {
                 id: 1,
                 name: 'Rice',
+                locationId: 1,
                 quantity: 1.5,
                 unit: 'kg',
                 expiresOn: '2027-04-01',
             },
-            { id: 2, name: 'Eggs', quantity: 6, unit: null, expiresOn: null },
+            {
+                id: 2,
+                name: 'Eggs',
+                locationId: 2,
+                quantity: 6,
+                unit: null,
+                expiresOn: null,
+            },
         ];
 
         vi.mocked(listItems).mockResolvedValue(items);
