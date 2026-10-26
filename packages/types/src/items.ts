@@ -2,6 +2,7 @@ import z from 'zod';
 
 export const newPantryItemSchema = z.object({
     name: z.string(),
+    locationId: z.number(),
     quantity: z.number(),
     unit: z.string().nullable(),
     expiresOn: z.string().nullable(),

@@ -7,6 +7,7 @@ export const listItems = async (): Promise<PantryItem[]> => {
         SELECT 
             id,
             name,
+            location_id AS "locationId",
             quantity::float8 AS quantity,
             unit,
             to_char(expires_on, 'YYYY-MM-DD') AS "expiresOn"

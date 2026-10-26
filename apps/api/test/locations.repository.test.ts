@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { listLocations } from '../src/repositories/locations';
 import { clearDatabase, insertLocation } from './utils/db';
-import { LOCATIONS } from './utils/fixtures';
+import { LOCATIONS_TEST_DATA } from './utils/fixtures';
 
 describe('Locations', () => {
     beforeEach(async () => {
@@ -16,13 +16,13 @@ describe('Locations', () => {
     });
 
     it('should return a list of locations if there are any', async () => {
-        await insertLocation(LOCATIONS.pantry);
+        await insertLocation(LOCATIONS_TEST_DATA.pantry);
 
         const fetchedLocations = await listLocations();
 
         expect(fetchedLocations).toEqual([
             {
-                ...LOCATIONS.pantry,
+                ...LOCATIONS_TEST_DATA.pantry,
                 id: 1,
             },
         ]);
