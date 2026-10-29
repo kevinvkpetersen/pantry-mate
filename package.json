@@ -27,6 +27,9 @@
         "Dockerfile": "docker build --check . -f",
         "*": "prettier --write --ignore-unknown"
     },
+    "overrides": {
+        "react": "19.2.3"
+    },
     "devDependencies": {
         "@eslint/js": "^9.39.5",
         "eslint": "^9.39.5",
@@ -43,5 +46,12 @@
     "engines": {
         "node": ">=24",
         "npm": ">=11"
+    },
+    "allowScripts": {
+        "cpu-features": false,
+        "esbuild": false,
+        "protobufjs": false,
+        "ssh2": false,
+        "unrs-resolver": false
     }
 }

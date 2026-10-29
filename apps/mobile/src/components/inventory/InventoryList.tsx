@@ -21,7 +21,13 @@ const InventoryList = () => {
             });
     }, []);
 
-    if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
+    if (loading)
+        return (
+            <ActivityIndicator
+                style={{ flex: 1 }}
+                accessibilityLabel="Loading"
+            />
+        );
     if (error)
         return <Text style={{ padding: 24 }}>Failed to load: {error}</Text>;
 

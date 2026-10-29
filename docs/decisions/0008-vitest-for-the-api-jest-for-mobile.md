@@ -1,6 +1,6 @@
 # 0008. Vitest for the API, Jest for mobile
 
-- Status: Accepted
+- Status: Superseded by [0016](0016-coverage-provider-per-test-runner.md)
 - Date: 2026-10-10
 
 ## Context

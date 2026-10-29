@@ -12,7 +12,7 @@ An app to help manage the contents of your pantry and fridge.
 - **API:** Node.js, Express 5, TypeScript, `pg`
 - **Database:** Postgres, run in Docker
 - **Validation:** Zod schemas, shared by the API and the app
-- **Testing:** Vitest, supertest, v8 coverage
+- **Testing:** Vitest, supertest and v8 coverage for the API; Jest and React Native Testing Library for the app
 - **Tooling:** npm workspaces, ESLint (typescript-eslint, type-aware), Prettier, Husky + lint-staged
 - **CI:** GitHub Actions
 

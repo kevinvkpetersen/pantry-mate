@@ -25,7 +25,7 @@ The healthcheck calls `/health` inside the container, so unhealthy means that re
 The container's `node_modules` comes from the image, not from your machine. Run `npm start` again, which rebuilds the image. The same applies after changing `package.json`.
 
 **`Cannot find module '@pantry-mate/types'`, or Vitest's "Failed to resolve entry for package".**
-The package's `exports` points at `dist/` by default, and `dist/` only exists after `npm run build`. Development tools are meant to read the source instead, through the `@pantry-mate/source` condition. Check that the tool has it turned on: `--conditions=@pantry-mate/source` for `tsx` (the `dev` script and the Dockerfile's `dev` stage), `customConditions` in the tsconfig, and `ssr.resolve.conditions` in the Vitest config. The production image builds the package and copies `packages/types/dist` and its `package.json`, so check the Dockerfile's `prod` stage if only that fails.
+The package's `exports` points at `dist/` by default, and `dist/` only exists after `npm run build`. Development tools are meant to read the source instead, through the `@pantry-mate/source` condition. Check that the tool has it turned on: `--conditions=@pantry-mate/source` for `tsx` (the `dev` script and the Dockerfile's `dev` stage), `customConditions` in the tsconfig, `ssr.resolve.conditions` in the Vitest config, and `testEnvironmentOptions.customExportConditions` in the mobile Jest config. The production image builds the package and copies `packages/types/dist` and its `package.json`, so check the Dockerfile's `prod` stage if only that fails.
 
 **Code changes don't restart the API.**
 Only `apps/api/src` and `packages/` are mounted into the container. Changes elsewhere need a rebuild. If changes in those folders aren't picked up either, check that the repo is on your main disk (see the Docker Desktop note under "The database").
@@ -56,7 +56,7 @@ The API checks its environment variables when it starts and names the one that's
 The repo's `.npmrc` sets `engine-strict`, so npm refuses to install on a Node or npm older than the root `engines` field allows (Node 24, npm 11). Run `nvm use` and try again. Shells that don't load nvm, such as some editor tasks and scripts, can pick up an older system Node, so check `node -v`. Don't use `--force`: an older npm runs every dependency's install script, and it rewrites `package-lock.json`.
 
 **npm lists packages whose install scripts were skipped.**
-npm doesn't run dependencies' install scripts unless they're approved (see [decision 0014](decisions/0014-dependency-install-scripts-blocked-by-default.md)). That's expected, and the listed packages work without them. If a package fails at runtime because its script didn't run, check what the script does, then approve that package with `npm install-scripts approve <package>`.
+npm doesn't run dependencies' install scripts unless they're approved (see [decision 0014](decisions/0014-dependency-install-scripts-blocked-by-default.md)). Packages already reviewed and denied are listed as `false` under `allowScripts` in the root `package.json`, so npm only lists new ones. Check what a new package's script does. If the package works without it, deny it with `npm install-scripts deny <package>` so the warning stops. If a package fails at runtime because its script didn't run, approve that package with `npm install-scripts approve <package>`.
 
 **VS Code shows lint or type errors that the terminal doesn't.**
 The ESLint and TypeScript servers cache `node_modules` and go stale after installs or config changes. Restart both from the Command Palette: "ESLint: Restart ESLint Server" and "TypeScript: Restart TS Server". If `npm run lint` and `npm run typecheck` are clean, trust them.
@@ -66,3 +66,6 @@ They are advisories in Expo's build tooling (the bundler and config plugins), an
 
 **CI fails on `no-unsafe-assignment` for `process.env.EXPO_PUBLIC_*` in the mobile app.**
 Expo generates `expo-env.d.ts`, which gives those variables a type, but the file is gitignored and so missing from a fresh checkout. `apps/mobile/env.d.ts` is a committed copy of the type reference that fixes this.
+
+**Mobile tests fail with "Invalid hook call".**
+There are two copies of React installed. npm hoists the newest React that any package accepts, which can be newer than the version Expo pins. The root `package.json` has an `overrides` entry that keeps one React, the same version as `apps/mobile`. Update it when an Expo SDK upgrade changes React. To check, run `npm ls react`: every entry should show the same version. If npm keeps an old version from the lockfile, remove that package's entries from `package-lock.json` and run `npm install` again.
