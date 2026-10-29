@@ -25,7 +25,7 @@ The healthcheck calls `/health` inside the container, so unhealthy means that re
 The container's `node_modules` comes from the image, not from your machine. Run `npm start` again, which rebuilds the image. The same applies after changing `package.json`.
 
 **`Cannot find module '@pantry-mate/types'`, or Vitest's "Failed to resolve entry for package".**
-The package's `exports` points at `dist/` by default, and `dist/` only exists after `npm run build`. Development tools are meant to read the source instead, through the `@pantry-mate/source` condition. Check that the tool has it turned on: `--conditions=@pantry-mate/source` for `tsx` (the `dev` script and the Dockerfile's `dev` stage), `customConditions` in the tsconfig, and `ssr.resolve.conditions` in the Vitest config. The production image builds the package and copies `packages/types/dist` and its `package.json`, so check the Dockerfile's `prod` stage if only that fails.
+The package's `exports` points at `dist/` by default, and `dist/` only exists after `npm run build`. Development tools are meant to read the source instead, through the `@pantry-mate/source` condition. Check that the tool has it turned on: `--conditions=@pantry-mate/source` for `tsx` (the `dev` script and the Dockerfile's `dev` stage), `customConditions` in the tsconfig, `ssr.resolve.conditions` in the Vitest config, and `testEnvironmentOptions.customExportConditions` in the mobile Jest config. The production image builds the package and copies `packages/types/dist` and its `package.json`, so check the Dockerfile's `prod` stage if only that fails.
 
 **Code changes don't restart the API.**
 Only `apps/api/src` and `packages/` are mounted into the container. Changes elsewhere need a rebuild. If changes in those folders aren't picked up either, check that the repo is on your main disk (see the Docker Desktop note under "The database").
@@ -66,3 +66,6 @@ They are advisories in Expo's build tooling (the bundler and config plugins), an
 
 **CI fails on `no-unsafe-assignment` for `process.env.EXPO_PUBLIC_*` in the mobile app.**
 Expo generates `expo-env.d.ts`, which gives those variables a type, but the file is gitignored and so missing from a fresh checkout. `apps/mobile/env.d.ts` is a committed copy of the type reference that fixes this.
+
+**Mobile tests fail with "Invalid hook call".**
+There are two copies of React installed. npm hoists the newest React that any package accepts, which can be newer than the version Expo pins. The root `package.json` has an `overrides` entry that keeps one React, the same version as `apps/mobile`. Update it when an Expo SDK upgrade changes React. To check, run `npm ls react`: every entry should show the same version. If npm keeps an old version from the lockfile, remove that package's entries from `package-lock.json` and run `npm install` again.

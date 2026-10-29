@@ -4,7 +4,7 @@
     - `apps/api` is a Node.js + Express + TypeScript backend.
     - `apps/mobile` is an Expo / React Native app.
     - `packages/types` is `@pantry-mate/types`, the Zod schemas shared by both apps and the types inferred from them (e.g. `pantryItemSchema` and `PantryItem`).
-- `@pantry-mate/types` has a build (`tsc`, CommonJS to `packages/types/dist`), which production loads. Its `exports` also has a `@pantry-mate/source` condition pointing at `src/index.ts`. The dev tools turn it on (`tsx --conditions`, TypeScript `customConditions`, Vitest `ssr.resolve.conditions`), so development, typecheck and tests read the source and never need `dist`. Any new consumer of the package needs the same setting.
+- `@pantry-mate/types` has a build (`tsc`, CommonJS to `packages/types/dist`), which production loads. Its `exports` also has a `@pantry-mate/source` condition pointing at `src/index.ts`. The dev tools turn it on (`tsx --conditions`, TypeScript `customConditions`, Vitest `ssr.resolve.conditions`, Jest `testEnvironmentOptions.customExportConditions`), so development, typecheck and tests read the source and never need `dist`. Any new consumer of the package needs the same setting.
 - `tsconfig.base.json` holds the project-wide compiler rules. Each workspace extends it together with its environment's base (`@tsconfig/node24` or `expo/tsconfig.base`).
 - Postgres and the API run in Docker Compose. `compose.yml` is the production-like stack (the API's `prod` image). The committed `compose.override.yml` is loaded automatically and makes it the dev stack: the API's `dev` image, `apps/api/src` and `packages` mounted from the host, `tsx watch`, and the inspector on `127.0.0.1:9229`. Schema and seed scripts live in `docker/db/init/`. The mobile app runs on the host.
 - The API image is built from the repo root (`-f apps/api/Dockerfile .`). Changes to dependencies, `package.json` or `tsconfig.json` need a rebuild (`npm start` again), because only the source folders are mounted.
@@ -39,6 +39,7 @@ npm run db:reset                # wipe the database volume and recreate it
 npm run -w apps/api dev         # API on the host in watch mode (run `docker compose stop api` first)
 npm run -w apps/api build       # compile the API
 npm run -w apps/mobile start    # Expo dev server (press `a` for the Android emulator)
+npm run -w apps/mobile test     # mobile tests only (Jest), with coverage
 npx expo-doctor                 # (in apps/mobile) diagnose dependency and config issues
 npx expo install --fix          # (in apps/mobile) fix incompatible package versions
 ```
