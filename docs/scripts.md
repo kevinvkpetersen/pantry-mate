@@ -23,7 +23,7 @@ Run these from the repo root. Commands that work across the repo run in every wo
 | `npm run -w apps/api test:watch`    | Re-run the API unit tests on change, without coverage                                                  |
 | `npm run -w apps/mobile start`      | Expo dev server                                                                                        |
 | `npm run -w apps/mobile test`       | Mobile tests only, with coverage                                                                       |
-| `npm run -w apps/mobile test:watch` | Re-run the mobile tests on change                                                                      |
+| `npm run -w apps/mobile test:watch` | Re-run the mobile tests on change, without coverage                                                    |
 
 `npm start` rebuilds the API image when dependencies or `package.json` have changed, and reuses Docker's cache otherwise, so run it again after changing any of those.
 

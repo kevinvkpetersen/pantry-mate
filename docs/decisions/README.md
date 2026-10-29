@@ -13,7 +13,7 @@ Short records of the significant technical decisions in this project: what was c
 | [0005](0005-expo-over-bare-react-native.md)                   | Expo over bare React Native                   | Accepted           |
 | [0006](0006-eslint-pinned-to-version-9.md)                    | ESLint pinned to version 9                    | Accepted           |
 | [0007](0007-unlicensed-all-rights-reserved.md)                | `UNLICENSED`, all rights reserved             | Accepted           |
-| [0008](0008-vitest-for-the-api-jest-for-mobile.md)            | Vitest for the API, Jest for mobile           | Accepted           |
+| [0008](0008-vitest-for-the-api-jest-for-mobile.md)            | Vitest for the API, Jest for mobile           | Superseded by 0016 |
 | [0009](0009-testcontainers-for-integration-tests.md)          | Testcontainers for integration tests          | Accepted           |
 | [0010](0010-single-readiness-style-health-endpoint.md)        | Single readiness-style health endpoint        | Accepted           |
 | [0011](0011-graceful-shutdown-with-a-drain-delay.md)          | Graceful shutdown with a drain delay          | Accepted           |
@@ -21,6 +21,7 @@ Short records of the significant technical decisions in this project: what was c
 | [0013](0013-api-in-a-container-during-development.md)         | API in a container during development         | Accepted           |
 | [0014](0014-dependency-install-scripts-blocked-by-default.md) | Dependency install scripts blocked by default | Accepted           |
 | [0015](0015-zod-schemas-in-the-shared-types-package.md)       | Zod schemas in the shared types package       | Accepted           |
+| [0016](0016-coverage-provider-per-test-runner.md)             | Coverage provider per test runner             | Accepted           |
 
 ## Adding a decision
 

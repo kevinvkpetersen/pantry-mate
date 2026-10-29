@@ -29,19 +29,31 @@ The mobile app uses Jest with the `jest-expo` preset and React Native Testing Li
 - **Unit tests** sit beside the code they test (`*.test.ts` or `*.test.tsx`). Files in `src/app/` are routes, so tests for screens live in `src/__tests__/app/` instead.
 - **Shared helpers** live in `src/__tests__/`: `fixtures.ts` for test data, `utils.ts` for shared assertions, and `setup.ts`, which runs before every test file. Jest only runs files ending in `.test.*`, so helpers there aren't treated as tests, and they're left out of coverage.
 - **API calls are mocked.** Tests mock `@/api/items` with `jest.mock`, and `fetch` with `jest.spyOn(globalThis, 'fetch')`. `resetMocks` is on, so each test, or a `beforeEach`, sets the values its mocks return.
+- **Jest's globals** (`describe`, `it`, `expect`, `jest`) are used without imports. `@types/jest` types them, through `"types": ["jest"]` in the tsconfig.
 - **`render` is async** in React Native Testing Library 14, so `await render(...)`. Older examples online don't.
 - `setup.ts` sets `EXPO_PUBLIC_API_URL` to `http://api.invalid`, so the tests don't need a `.env` and can't reach a real server.
 
-| Command                             | What it runs                 | Needs Docker |
-| ----------------------------------- | ---------------------------- | ------------ |
-| `npm run -w apps/mobile test`       | Mobile tests, with coverage  | No           |
-| `npm run -w apps/mobile test:watch` | Mobile tests, re-run on save | No           |
+| Command                             | What it runs                                   | Needs Docker |
+| ----------------------------------- | ---------------------------------------------- | ------------ |
+| `npm run -w apps/mobile test`       | Mobile tests, with coverage                    | No           |
+| `npm run -w apps/mobile test:watch` | Mobile tests, re-run on save, without coverage | No           |
 
-Watch mode reads the Jest config when it starts, so restart it after changing the config.
+Watch mode skips coverage, because it only runs the tests related to changed files, and its table would only list the files those tests load. Watch mode also reads the Jest config when it starts, so restart it after changing the config.
 
 The tests load `@pantry-mate/types` from its TypeScript source, through `testEnvironmentOptions.customExportConditions`. That list replaces React Native's defaults, so it repeats `require` and `react-native` before `@pantry-mate/source`.
 
 Coverage includes all of `src` except `_layout.tsx` files, which only configure navigators. An HTML report is written to `apps/mobile/coverage`.
+
+- New code should be fully covered, as in the API, and that includes UI code: components, screens and API calls. If a file or line can't be meaningfully tested, exclude it deliberately and record the reason next to the exclusion, in the coverage config or in an `istanbul ignore` comment. `_layout.tsx` files are excluded, so keep logic out of them.
+
+### Coverage providers
+
+Each app uses the default coverage provider for its test runner: v8 for the API (Vitest) and babel, which is Istanbul, for mobile (Jest). Exclusion comments differ to match: `/* v8 ignore */` in the API and `/* istanbul ignore */` in mobile.
+
+They were compared by skipping a test file and checking which untested code each provider reported:
+
+- **Mobile:** v8 was less accurate. With `InventoryList.test.tsx` skipped, it marked the never-run error `return` and `.catch` callback as covered, and reported 97.7% of lines where babel reported 86.7%. jest-expo compiles every file with Babel, and v8 has to map its results back through source maps, which goes wrong around JSX. v8 was also slower, about 1.6 to 2.7 seconds against 1.4.
+- **API:** both found the same untested code. Istanbul additionally counts default parameter values (`emitter = process`) as branches, and doesn't read `v8 ignore` comments. Vitest compiles the TypeScript itself, and v8 maps it accurately, so Istanbul would add a dependency without catching more.
 
 ## Before a commit
 
