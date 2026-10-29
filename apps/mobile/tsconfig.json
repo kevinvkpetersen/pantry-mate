@@ -2,6 +2,7 @@
     "extends": ["expo/tsconfig.base", "../../tsconfig.base.json"],
     "compilerOptions": {
         "customConditions": ["react-native", "@pantry-mate/source"],
+        "types": ["jest"],
         "paths": {
             "@/*": ["./src/*"],
             "@/assets/*": ["./assets/*"]
