@@ -32,6 +32,13 @@
         "setupFiles": [
             "<rootDir>/src/__tests__/setup.ts"
         ],
+        "testEnvironmentOptions": {
+            "customExportConditions": [
+                "require",
+                "react-native",
+                "@pantry-mate/source"
+            ]
+        },
         "testMatch": [
             "**/*.test.[jt]s?(x)"
         ]
