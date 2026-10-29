@@ -46,5 +46,12 @@
     "engines": {
         "node": ">=24",
         "npm": ">=11"
+    },
+    "allowScripts": {
+        "cpu-features": false,
+        "esbuild": false,
+        "protobufjs": false,
+        "ssh2": false,
+        "unrs-resolver": false
     }
 }

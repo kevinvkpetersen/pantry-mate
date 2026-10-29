@@ -16,7 +16,7 @@
 - Make small, focused edits, one change at a time.
 - Ask before installing new dependencies. Once approved, install in `apps/mobile` with `npx expo install <package>` (never `npm add`), and use `npm install` elsewhere.
 - Use the Node version in `.nvmrc` (`nvm use`). Non-interactive shells may not load nvm and fall back to an older system Node. `.npmrc` sets `engine-strict`, so installs fail outside the root `engines` range (Node 24+, npm 11+). Fix the Node version; never bypass it with `--force`.
-- npm blocks dependency install scripts by default, and the project keeps it that way. Never run `npm install-scripts approve` (or `approve --all`) without asking. If a package fails because its install script was skipped, report it.
+- npm blocks dependency install scripts by default, and the project keeps it that way. Never run `npm install-scripts approve` (or `approve --all`) without asking. Reviewed and denied packages are `false` entries under `allowScripts` in the root `package.json`. If a package fails because its install script was skipped, report it.
 - Run `npm run typecheck` and `npm run lint` before declaring any task done.
 
 # Commands
