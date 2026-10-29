@@ -1,17 +1,12 @@
 import { render, screen } from '@testing-library/react-native';
 
+import { ITEMS_TEST_DATA } from '@/__tests__/fixtures';
+
 import InventoryItem from './InventoryItem';
 
 describe('InventoryItem', () => {
     it('renders with optional fields', async () => {
-        const testItem = {
-            id: 1,
-            name: 'Rice',
-            locationId: 1,
-            quantity: 2,
-            unit: 'kg',
-            expiresOn: '2024-12-31',
-        };
+        const testItem = ITEMS_TEST_DATA.rice;
 
         await render(<InventoryItem item={testItem} />);
 
@@ -30,14 +25,7 @@ describe('InventoryItem', () => {
     });
 
     it('renders without optional fields', async () => {
-        const testItem = {
-            id: 2,
-            name: 'Eggs',
-            locationId: 2,
-            quantity: 6,
-            unit: null,
-            expiresOn: null,
-        };
+        const testItem = ITEMS_TEST_DATA.eggs;
 
         await render(<InventoryItem item={testItem} />);
 

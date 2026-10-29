@@ -1,5 +1,8 @@
 import { render, screen } from '@testing-library/react-native';
 
+import { ITEMS_TEST_DATA } from '@/__tests__/fixtures';
+import { fetchItems } from '@/api/items';
+
 import InventoryList from './InventoryList';
 
 jest.mock('@/api/items', () => ({
@@ -8,6 +11,8 @@ jest.mock('@/api/items', () => ({
 
 describe('InventoryList', () => {
     it('renders fetched items', async () => {
+        jest.mocked(fetchItems).mockResolvedValue([ITEMS_TEST_DATA.rice]);
+
         await render(<InventoryList />);
 
         expect(screen.queryByText('null', { exact: false })).toBeNull();
