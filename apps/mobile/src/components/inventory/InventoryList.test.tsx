@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react-native';
 
 import { ITEMS_TEST_DATA } from '@/__tests__/fixtures';
+import { expectNoNullishText } from '@/__tests__/utils';
 import { fetchItems } from '@/api/items';
 
 import InventoryList from './InventoryList';
@@ -10,6 +11,10 @@ jest.mock('@/api/items', () => ({
 }));
 
 describe('InventoryList', () => {
+    afterEach(() => {
+        expectNoNullishText();
+    });
+
     it('renders fetched items', async () => {
         jest.mocked(fetchItems).mockResolvedValue(
             Object.values(ITEMS_TEST_DATA)
@@ -17,11 +22,8 @@ describe('InventoryList', () => {
 
         await render(<InventoryList />);
 
-        expect(screen.getByText('Rice')).toBeOnTheScreen();
-        expect(screen.getByText('Eggs')).toBeOnTheScreen();
-
-        expect(screen.queryByText('null', { exact: false })).toBeNull();
-        expect(screen.queryByText('undefined', { exact: false })).toBeNull();
+        expect(screen.getByText(ITEMS_TEST_DATA.rice.name)).toBeOnTheScreen();
+        expect(screen.getByText(ITEMS_TEST_DATA.eggs.name)).toBeOnTheScreen();
     });
 
     it('renders error if fetch fails', async () => {
@@ -37,9 +39,6 @@ describe('InventoryList', () => {
         expect(
             screen.getByText('TEST ERROR MESSAGE', { exact: false })
         ).toBeOnTheScreen();
-
-        expect(screen.queryByText('null', { exact: false })).toBeNull();
-        expect(screen.queryByText('undefined', { exact: false })).toBeNull();
     });
 
     it('renders error if fetch fails with an unknown error', async () => {
@@ -53,9 +52,6 @@ describe('InventoryList', () => {
         expect(
             screen.getByText('Unknown error', { exact: false })
         ).toBeOnTheScreen();
-
-        expect(screen.queryByText('null', { exact: false })).toBeNull();
-        expect(screen.queryByText('undefined', { exact: false })).toBeNull();
     });
 
     it('renders a loading indicator while waiting for the data', async () => {

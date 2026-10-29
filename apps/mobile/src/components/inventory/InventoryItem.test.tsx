@@ -1,10 +1,15 @@
 import { render, screen } from '@testing-library/react-native';
 
 import { ITEMS_TEST_DATA } from '@/__tests__/fixtures';
+import { expectNoNullishText } from '@/__tests__/utils';
 
 import InventoryItem from './InventoryItem';
 
 describe('InventoryItem', () => {
+    afterEach(() => {
+        expectNoNullishText();
+    });
+
     it('renders with optional fields', async () => {
         const testItem = ITEMS_TEST_DATA.rice;
 
@@ -19,9 +24,6 @@ describe('InventoryItem', () => {
         expect(
             screen.getByText(`expires ${testItem.expiresOn}`, { exact: false })
         ).toBeOnTheScreen();
-
-        expect(screen.queryByText('null', { exact: false })).toBeNull();
-        expect(screen.queryByText('undefined', { exact: false })).toBeNull();
     });
 
     it('renders without optional fields', async () => {
@@ -35,8 +37,5 @@ describe('InventoryItem', () => {
         ).toBeOnTheScreen();
 
         expect(screen.queryByText('expires', { exact: false })).toBeNull();
-
-        expect(screen.queryByText('null', { exact: false })).toBeNull();
-        expect(screen.queryByText('undefined', { exact: false })).toBeNull();
     });
 });
