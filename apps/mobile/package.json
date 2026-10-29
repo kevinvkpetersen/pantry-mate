@@ -28,6 +28,7 @@
             "/node_modules/"
         ],
         "preset": "jest-expo",
+        "resetMocks": true,
         "testMatch": [
             "**/*.test.[jt]s?(x)"
         ]
