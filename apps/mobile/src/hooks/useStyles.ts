@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 const colors = {
@@ -10,7 +11,7 @@ const spacing = {
     tight: 8,
 };
 
-const useStyles = () => {
+const createStyles = () => {
     return {
         text: StyleSheet.create({
             surface: {
@@ -30,6 +31,10 @@ const useStyles = () => {
             },
         }),
     };
+};
+
+const useStyles = () => {
+    return useMemo(() => createStyles(), []);
 };
 
 export default useStyles;
