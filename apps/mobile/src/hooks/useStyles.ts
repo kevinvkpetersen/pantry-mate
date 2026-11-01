@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import type { TextStyle } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 const colors = {
@@ -11,6 +12,19 @@ const spacing = {
     tight: 8,
 };
 
+const font = {
+    size: {
+        medium: 16,
+        small: 14,
+    },
+    weight: {
+        semibold: '600',
+    },
+} as const satisfies {
+    size: Record<string, number>;
+    weight: Record<string, TextStyle['fontWeight']>;
+};
+
 const createStyles = () => {
     return {
         text: StyleSheet.create({
@@ -21,12 +35,12 @@ const createStyles = () => {
                 borderRadius: spacing.normal,
             },
             primary: {
-                fontSize: 16,
-                fontWeight: '600',
+                fontSize: font.size.medium,
+                fontWeight: font.weight.semibold,
                 color: colors.theme.dark,
             },
             detail: {
-                fontSize: 14,
+                fontSize: font.size.small,
                 color: colors.theme.mid,
             },
         }),
