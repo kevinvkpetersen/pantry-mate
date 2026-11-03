@@ -1,11 +1,16 @@
 import { useMemo } from 'react';
-import type { TextStyle } from 'react-native';
+import type { ColorValue, TextStyle } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 const colors = {
     white: '#FFFFFF',
     theme: { mid: '#0F5714', dark: '#062308' },
+    variants: {
+        fresh: { primary: '#0E5814', subtle: '#DCF9DE' },
+    } satisfies Record<string, { primary: ColorValue; subtle: ColorValue }>,
 } as const;
+
+export type BadgeVariant = keyof typeof colors.variants;
 
 const spacing = {
     normal: 12,
@@ -52,17 +57,25 @@ const createStyles = () => {
                 backgroundColor: colors.white,
             },
         }),
-        badge: StyleSheet.create({
-            base: {
-                padding: spacing.tight,
-                paddingVertical: spacing.xTight,
-                borderRadius: radius.full,
-            },
-            text: {
-                fontSize: font.size.small,
-                fontWeight: font.weight.semibold,
-            },
-        }),
+        badge: {
+            styles: StyleSheet.create({
+                base: {
+                    padding: spacing.tight,
+                    paddingVertical: spacing.xTight,
+                    borderRadius: radius.full,
+                },
+                text: {
+                    fontSize: font.size.small,
+                    fontWeight: font.weight.semibold,
+                },
+            }),
+            variants: {
+                fresh: StyleSheet.create({
+                    view: { backgroundColor: colors.variants.fresh.subtle },
+                    text: { color: colors.variants.fresh.primary },
+                }),
+            } satisfies Record<BadgeVariant, { view: object; text: object }>,
+        },
     };
 };
 

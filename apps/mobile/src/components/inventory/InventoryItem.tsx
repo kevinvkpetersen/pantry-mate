@@ -23,7 +23,9 @@ const InventoryItem = ({ item }: { item: PantryItem }) => {
                     {item.quantity} {item.unit ?? ''}
                 </Text>
             </View>
-            {!!item.expiresOn && <Badge text={`expires ${item.expiresOn}`} />}
+            {!!item.expiresOn && (
+                <Badge text={`expires ${item.expiresOn}`} variant="fresh" />
+            )}
         </View>
     );
 };
