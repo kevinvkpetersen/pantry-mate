@@ -77,7 +77,8 @@ describe('InventoryItem', () => {
     });
 
     it.each([
-        ['today', '2024-06-15', '0 days left'],
+        ['today', '2024-06-15', 'Expires today'],
+        ['tomorrow', '2024-06-16', 'Expires tomorrow'],
         ['in 7 days', '2024-06-22', '7 days left'],
     ])('shows a warning badge when it expires %s', async (_, date, text) => {
         await render(<InventoryItem item={expiringOn(date)} />);
@@ -100,6 +101,6 @@ describe('InventoryItem', () => {
     it('shows the expiry date when it is more than 30 days away', async () => {
         await render(<InventoryItem item={expiringOn('2024-07-16')} />);
 
-        expectBadge('expires 2024-07-16', 'fresh');
+        expectBadge('Expires 2024-07-16', 'fresh');
     });
 });

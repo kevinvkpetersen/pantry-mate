@@ -13,6 +13,12 @@ const layout = StyleSheet.create({
     },
 });
 
+const daysLeftText = (daysLeft: number) => {
+    if (daysLeft === 0) return 'Expires today';
+    if (daysLeft === 1) return 'Expires tomorrow';
+    return `${daysLeft} days left`;
+};
+
 const getFreshnessBadge = (expiresOn: string | null) => {
     if (!expiresOn) return null;
 
@@ -22,15 +28,14 @@ const getFreshnessBadge = (expiresOn: string | null) => {
 
     const daysLeft = daysUntil(expiresOn);
     if (daysLeft <= 7) {
-        return <Badge text={`${daysLeft} days left`} variant="warning" />;
+        return <Badge text={daysLeftText(daysLeft)} variant="warning" />;
     }
 
     if (daysLeft <= 30) {
-        return <Badge text={`${daysLeft} days left`} variant="fresh" />;
+        return <Badge text={daysLeftText(daysLeft)} variant="fresh" />;
     }
 
-    // far out
-    return <Badge text={`expires ${expiresOn}`} variant="fresh" />;
+    return <Badge text={`Expires ${expiresOn}`} variant="fresh" />;
 };
 
 const InventoryItem = ({ item }: { item: Item }) => {
