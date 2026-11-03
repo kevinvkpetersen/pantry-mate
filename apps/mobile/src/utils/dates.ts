@@ -9,7 +9,12 @@ export const today = (now = new Date()) =>
 export const daysUntil = (target: string, now = new Date()) => {
     const targetDate = new Date(target);
 
-    if (Number.isNaN(targetDate.getTime()))
+    // A date that doesn't exist, such as 2024-02-31, rolls over into the next
+    // month, so check that it converts back to the same string
+    if (
+        Number.isNaN(targetDate.getTime()) ||
+        targetDate.toISOString().slice(0, 10) !== target
+    )
         throw new RangeError(`Invalid date: ${target}`);
 
     return (targetDate.getTime() - toUtcMidnight(now).getTime()) / MS_PER_DAY;

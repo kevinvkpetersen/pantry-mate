@@ -59,6 +59,21 @@ describe('daysUntil', () => {
         );
         expect(() => daysUntil('2024-13-01', now)).toThrow(RangeError);
     });
+
+    it('throws for a date that does not exist', () => {
+        expect(() => daysUntil('2024-02-31', now)).toThrow(
+            'Invalid date: 2024-02-31'
+        );
+        expect(() => daysUntil('2023-02-29', now)).toThrow(RangeError);
+    });
+
+    it('accepts a leap day', () => {
+        expect(daysUntil('2024-02-29', new Date(2024, 1, 28))).toBe(1);
+    });
+
+    it('throws for a date with a time', () => {
+        expect(() => daysUntil('2024-06-16T10:00', now)).toThrow(RangeError);
+    });
 });
 
 afterEach(() => {
