@@ -2,15 +2,21 @@ import { useMemo } from 'react';
 import type { ColorValue, TextStyle } from 'react-native';
 import { StyleSheet } from 'react-native';
 
+export const BADGE_VARIANTS = ['fresh', 'warning', 'expired'] as const;
+export type BadgeVariant = (typeof BADGE_VARIANTS)[number];
+
 const colors = {
     white: '#FFFFFF',
     theme: { mid: '#0F5714', dark: '#062308' },
     variants: {
         fresh: { primary: '#0E5814', subtle: '#DCF9DE' },
-    } satisfies Record<string, { primary: ColorValue; subtle: ColorValue }>,
+        warning: { primary: '#E09600', subtle: '#FFF1D6' },
+        expired: { primary: '#B3261E', subtle: '#FBE9E7' },
+    } satisfies Record<
+        BadgeVariant,
+        { primary: ColorValue; subtle: ColorValue }
+    >,
 } as const;
-
-export type BadgeVariant = keyof typeof colors.variants;
 
 const spacing = {
     normal: 12,
@@ -73,6 +79,14 @@ const createStyles = () => {
                 fresh: StyleSheet.create({
                     view: { backgroundColor: colors.variants.fresh.subtle },
                     text: { color: colors.variants.fresh.primary },
+                }),
+                warning: StyleSheet.create({
+                    view: { backgroundColor: colors.variants.warning.subtle },
+                    text: { color: colors.variants.warning.primary },
+                }),
+                expired: StyleSheet.create({
+                    view: { backgroundColor: colors.variants.expired.subtle },
+                    text: { color: colors.variants.expired.primary },
                 }),
             } satisfies Record<BadgeVariant, { view: object; text: object }>,
         },

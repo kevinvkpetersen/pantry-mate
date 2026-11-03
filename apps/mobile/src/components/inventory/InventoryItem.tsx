@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Badge from '@/components/Badge';
 import useStyles from '@/hooks/useStyles';
+import { daysUntil, today } from '@/utils/dates';
 
 const layout = StyleSheet.create({
     row: {
@@ -11,6 +12,26 @@ const layout = StyleSheet.create({
         justifyContent: 'space-between',
     },
 });
+
+const getFreshnessBadge = (expiresOn: string | null) => {
+    if (!expiresOn) return null;
+
+    if (expiresOn < today()) {
+        return <Badge text="Expired" variant="expired" />;
+    }
+
+    const daysLeft = daysUntil(expiresOn);
+    if (daysLeft <= 7) {
+        return <Badge text={`${daysLeft} days left`} variant="warning" />;
+    }
+
+    if (daysLeft <= 30) {
+        return <Badge text={`${daysLeft} days left`} variant="fresh" />;
+    }
+
+    // far out
+    return <Badge text={`expires ${expiresOn}`} variant="fresh" />;
+};
 
 const InventoryItem = ({ item }: { item: PantryItem }) => {
     const styles = useStyles();
@@ -23,9 +44,7 @@ const InventoryItem = ({ item }: { item: PantryItem }) => {
                     {item.quantity} {item.unit ?? ''}
                 </Text>
             </View>
-            {!!item.expiresOn && (
-                <Badge text={`expires ${item.expiresOn}`} variant="fresh" />
-            )}
+            {getFreshnessBadge(item.expiresOn)}
         </View>
     );
 };
