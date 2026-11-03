@@ -1,4 +1,4 @@
-import type { PantryItem } from '@pantry-mate/types';
+import { type PantryItem, pantryItemSchema } from '@pantry-mate/types';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -9,5 +9,5 @@ export const fetchItems = async (): Promise<PantryItem[]> => {
         throw new Error(`HTTP ${response.status}`);
     }
 
-    return (await response.json()) as PantryItem[];
+    return pantryItemSchema.array().parse(await response.json());
 };

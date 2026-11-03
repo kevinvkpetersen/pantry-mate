@@ -21,4 +21,12 @@ describe('fetchItems', () => {
 
         await expect(fetchItems()).rejects.toThrow('HTTP 500');
     });
+
+    it('throws when the response does not match the schema', async () => {
+        jest.spyOn(globalThis, 'fetch').mockResolvedValue(
+            Response.json([{ ...ITEMS_TEST_DATA.rice, quantity: '2' }])
+        );
+
+        await expect(fetchItems()).rejects.toMatchObject({ name: 'ZodError' });
+    });
 });
