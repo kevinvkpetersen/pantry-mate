@@ -14,7 +14,7 @@ const colors = {
     },
     variants: {
         fresh: { primary: '#0E5814', subtle: '#DCF9DE' },
-        warning: { primary: '#E09600', subtle: '#FFF1D6' },
+        warning: { primary: '#8A5A00', subtle: '#FFF1D6' },
         expired: { primary: '#B3261E', subtle: '#FBE9E7' },
     } satisfies Record<
         BadgeVariant,
