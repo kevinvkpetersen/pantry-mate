@@ -1,4 +1,4 @@
-import type { PantryItem } from '@pantry-mate/types';
+import type { Item } from '@pantry-mate/types';
 
 export const ITEMS_TEST_DATA = {
     rice: {
@@ -17,4 +17,4 @@ export const ITEMS_TEST_DATA = {
         unit: null,
         expiresOn: null,
     },
-} satisfies Record<string, PantryItem>;
+} satisfies Record<string, Item>;

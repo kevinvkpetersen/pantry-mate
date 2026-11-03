@@ -1,4 +1,4 @@
-import type { NewLocation, NewPantryItem } from '@pantry-mate/types';
+import type { NewItem, NewLocation } from '@pantry-mate/types';
 
 import { insertLocation } from './db';
 
@@ -7,7 +7,7 @@ export const LOCATIONS_TEST_DATA = {
     fridge: { name: 'Fridge' },
 } as const satisfies Record<string, NewLocation>;
 
-type ItemTestData = Omit<NewPantryItem, 'locationId'>;
+type ItemTestData = Omit<NewItem, 'locationId'>;
 export const ITEMS_TEST_DATA = {
     rice: {
         name: 'Rice',

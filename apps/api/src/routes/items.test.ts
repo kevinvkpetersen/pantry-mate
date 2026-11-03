@@ -1,4 +1,4 @@
-import type { PantryItem } from '@pantry-mate/types';
+import type { Item } from '@pantry-mate/types';
 import request from 'supertest';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -15,7 +15,7 @@ describe('Items', () => {
     });
 
     it('returns the items from the repository', async () => {
-        const items: PantryItem[] = [
+        const items: Item[] = [
             {
                 id: 1,
                 name: 'Rice',
@@ -39,7 +39,7 @@ describe('Items', () => {
         const response = await request(app).get('/items');
 
         expect(response.status).toBe(200);
-        expect(response.body as PantryItem[]).toEqual(items);
+        expect(response.body as Item[]).toEqual(items);
     });
 
     it('responds with 500 when the repository fails', async () => {

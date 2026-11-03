@@ -1,16 +1,16 @@
 import z from 'zod';
 
-export const newPantryItemSchema = z.object({
+export const newItemSchema = z.object({
     name: z.string(),
     locationId: z.number(),
     quantity: z.number(),
     unit: z.string().nullable(),
-    expiresOn: z.string().nullable(),
+    expiresOn: z.iso.date().nullable(),
 });
-export type NewPantryItem = z.infer<typeof newPantryItemSchema>;
+export type NewItem = z.infer<typeof newItemSchema>;
 
-export const pantryItemSchema = z.object({
-    ...newPantryItemSchema.shape,
+export const itemSchema = z.object({
+    ...newItemSchema.shape,
     id: z.number(),
 });
-export type PantryItem = z.infer<typeof pantryItemSchema>;
+export type Item = z.infer<typeof itemSchema>;

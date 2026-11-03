@@ -1,4 +1,4 @@
-import type { Location, NewLocation, NewPantryItem } from '@pantry-mate/types';
+import type { Location, NewItem, NewLocation } from '@pantry-mate/types';
 import { Pool } from 'pg';
 import { inject } from 'vitest';
 
@@ -28,7 +28,7 @@ export const insertItem = ({
     quantity,
     unit,
     expiresOn,
-}: NewPantryItem) =>
+}: NewItem) =>
     testPool.query(
         `
         INSERT INTO items (
