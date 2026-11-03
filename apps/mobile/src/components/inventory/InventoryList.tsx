@@ -4,8 +4,11 @@ import { ActivityIndicator, FlatList, Text } from 'react-native';
 
 import { fetchItems } from '@/api/items';
 import InventoryItem from '@/components/inventory/InventoryItem';
+import useStyles from '@/hooks/useStyles';
 
 const InventoryList = () => {
+    const styles = useStyles();
+
     const [items, setItems] = useState<Item[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -35,7 +38,7 @@ const InventoryList = () => {
         <FlatList
             data={items}
             keyExtractor={(item) => String(item.id)}
-            contentContainerStyle={{ padding: 24, gap: 12 }}
+            contentContainerStyle={styles.card.list}
             renderItem={({ item }) => <InventoryItem item={item} />}
         />
     );

@@ -7,7 +7,11 @@ export type BadgeVariant = (typeof BADGE_VARIANTS)[number];
 
 const colors = {
     white: '#FFFFFF',
-    theme: { mid: '#0F5714', dark: '#062308' },
+    theme: {
+        light: '#EEFCEF',
+        mid: '#0F5714',
+        dark: '#062308',
+    },
     variants: {
         fresh: { primary: '#0E5814', subtle: '#DCF9DE' },
         warning: { primary: '#E09600', subtle: '#FFF1D6' },
@@ -19,6 +23,7 @@ const colors = {
 } as const;
 
 const spacing = {
+    relaxed: 16,
     normal: 12,
     tight: 8,
     xTight: 4,
@@ -61,6 +66,15 @@ const createStyles = () => {
                 paddingHorizontal: spacing.normal,
                 borderRadius: radius.normal,
                 backgroundColor: colors.white,
+            },
+            list: {
+                padding: spacing.relaxed,
+                gap: spacing.normal,
+            },
+        }),
+        canvas: StyleSheet.create({
+            background: {
+                backgroundColor: colors.theme.light,
             },
         }),
         badge: {
