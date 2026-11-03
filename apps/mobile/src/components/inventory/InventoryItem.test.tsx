@@ -1,4 +1,4 @@
-import type { PantryItem } from '@pantry-mate/types';
+import type { Item } from '@pantry-mate/types';
 import { render, renderHook, screen } from '@testing-library/react-native';
 
 import { ITEMS_TEST_DATA } from '@/__tests__/fixtures';
@@ -11,7 +11,7 @@ import InventoryItem from './InventoryItem';
 // Fixed "today" for the expiry tests: 2024-06-15, local time
 const NOW = new Date(2024, 5, 15, 12);
 
-const expiringOn = (expiresOn: string): PantryItem => ({
+const expiringOn = (expiresOn: string): Item => ({
     ...ITEMS_TEST_DATA.rice,
     expiresOn,
 });

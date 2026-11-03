@@ -1,4 +1,4 @@
-import type { PantryItem } from '@pantry-mate/types';
+import type { Item } from '@pantry-mate/types';
 import { StyleSheet, Text, View } from 'react-native';
 
 import Badge from '@/components/Badge';
@@ -33,7 +33,7 @@ const getFreshnessBadge = (expiresOn: string | null) => {
     return <Badge text={`expires ${expiresOn}`} variant="fresh" />;
 };
 
-const InventoryItem = ({ item }: { item: PantryItem }) => {
+const InventoryItem = ({ item }: { item: Item }) => {
     const styles = useStyles();
 
     return (

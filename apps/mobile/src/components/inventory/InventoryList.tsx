@@ -1,4 +1,4 @@
-import type { PantryItem } from '@pantry-mate/types';
+import type { Item } from '@pantry-mate/types';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text } from 'react-native';
 
@@ -6,7 +6,7 @@ import { fetchItems } from '@/api/items';
 import InventoryItem from '@/components/inventory/InventoryItem';
 
 const InventoryList = () => {
-    const [items, setItems] = useState<PantryItem[]>([]);
+    const [items, setItems] = useState<Item[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
