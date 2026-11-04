@@ -22,13 +22,21 @@
         "test": "npm run test --workspaces --if-present",
         "typecheck": "npm run typecheck --workspaces --if-present"
     },
+    "allowScripts": {
+        "@parcel/watcher": false,
+        "cpu-features": false,
+        "esbuild": false,
+        "protobufjs": false,
+        "ssh2": false,
+        "unrs-resolver": false
+    },
     "lint-staged": {
         "*.{js,mjs,cjs,ts,tsx}": "eslint",
         "Dockerfile": "docker build --check . -f",
         "*": "prettier --write --ignore-unknown"
     },
     "overrides": {
-        "react": "19.2.3"
+        "react": "19.3.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.5",
@@ -46,12 +54,5 @@
     "engines": {
         "node": ">=24",
         "npm": ">=11"
-    },
-    "allowScripts": {
-        "cpu-features": false,
-        "esbuild": false,
-        "protobufjs": false,
-        "ssh2": false,
-        "unrs-resolver": false
     }
 }
