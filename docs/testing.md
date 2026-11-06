@@ -19,7 +19,7 @@ The first integration run is slower while Docker pulls the Postgres image.
 Both projects load `@pantry-mate/types` from its TypeScript source, through the `@pantry-mate/source` export condition set in `ssr.resolve.conditions` in `vitest.config.mts`. The tests don't need the package built.
 
 - `npm test` measures both projects together and prints one coverage table. An HTML report is written to `apps/api/coverage`.
-- New code should be fully covered. If a file or line can't be meaningfully tested, exclude it deliberately and record the reason next to the exclusion, in the coverage config or in a `v8 ignore` comment. `index.ts` files are excluded, because they only wire things together, so keep logic out of them.
+- Coverage is enforced: every file must reach 100% of statements, branches, functions and lines (`coverage.thresholds` in `vitest.config.mts`), or `npm test` fails, locally and in CI. The thresholds apply per file, so a well-covered file can't hide an untested one, and to the unit and integration tests combined. If a file or line can't be meaningfully tested, exclude it deliberately and record the reason next to the exclusion, in the coverage config or in a `v8 ignore` comment. `index.ts` files are excluded, because they only wire things together, so keep logic out of them.
 - Code that only a real Postgres can verify, such as SQL and the `::float8` and date conversions, is covered by integration tests rather than by mocking `pg`.
 
 ## Mobile tests
@@ -40,11 +40,13 @@ The mobile app uses Jest with the `jest-expo` preset and React Native Testing Li
 
 Watch mode skips coverage, because it only runs the tests related to changed files, and its table would only list the files those tests load. Watch mode also reads the Jest config when it starts, so restart it after changing the config.
 
+To run only some test files, add `--coverage=false`, for example `npm run -w apps/mobile test -- src/utils --coverage=false`. With coverage on, the files those tests don't load count as untested, and the run fails the thresholds.
+
 The tests load `@pantry-mate/types` from its TypeScript source, through `testEnvironmentOptions.customExportConditions`. That list replaces React Native's defaults, so it repeats `require` and `react-native` before `@pantry-mate/source`.
 
 Coverage includes all of `src` except `_layout.tsx` files, which only configure navigators. An HTML report is written to `apps/mobile/coverage`.
 
-- New code should be fully covered, as in the API, and that includes UI code: components, screens and API calls. If a file or line can't be meaningfully tested, exclude it deliberately and record the reason next to the exclusion, in the coverage config or in an `istanbul ignore` comment. `_layout.tsx` files are excluded, so keep logic out of them.
+- Coverage is enforced per file, as in the API (`coverageThreshold` in the Jest config), and that includes UI code: components, screens and API calls. If a file or line can't be meaningfully tested, exclude it deliberately and record the reason next to the exclusion, in the coverage config or in an `istanbul ignore` comment. `_layout.tsx` files are excluded, so keep logic out of them.
 
 ### Coverage providers
 

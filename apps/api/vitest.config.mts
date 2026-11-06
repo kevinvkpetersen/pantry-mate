@@ -36,6 +36,11 @@ export default defineConfig({
             include: ['src/**/*.ts'],
             exclude: ['src/**/index.ts', 'src/**/*.test.ts'],
             reporter: ['text', 'html'],
+            // Every file must be fully covered, so a well-covered file can't hide an untested one
+            thresholds: {
+                100: true,
+                perFile: true,
+            },
         },
     },
     ssr: {
