@@ -107,8 +107,6 @@ const createStyles = () => {
     };
 };
 
-const useStyles = () => {
+export const useStyles = () => {
     return useMemo(() => createStyles(), []);
 };
-
-export default useStyles;

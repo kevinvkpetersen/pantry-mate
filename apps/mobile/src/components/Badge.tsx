@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 
 import type { BadgeVariant } from '@/hooks/useStyles';
-import useStyles from '@/hooks/useStyles';
+import { useStyles } from '@/hooks/useStyles';
 
 const Badge = ({ text, variant }: { text: string; variant: BadgeVariant }) => {
     const { styles, variants } = useStyles().badge;

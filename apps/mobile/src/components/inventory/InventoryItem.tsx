@@ -2,7 +2,7 @@ import type { Item } from '@pantry-mate/types';
 import { StyleSheet, Text, View } from 'react-native';
 
 import Badge from '@/components/Badge';
-import useStyles from '@/hooks/useStyles';
+import { useStyles } from '@/hooks/useStyles';
 import { daysUntil, today } from '@/utils/dates';
 
 const layout = StyleSheet.create({

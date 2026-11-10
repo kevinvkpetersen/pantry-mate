@@ -2,7 +2,7 @@ import { ActivityIndicator, FlatList, Text } from 'react-native';
 
 import InventoryItem from '@/components/inventory/InventoryItem';
 import { useItems } from '@/hooks/useItems';
-import useStyles from '@/hooks/useStyles';
+import { useStyles } from '@/hooks/useStyles';
 
 const InventoryList = () => {
     const { items, error, loading } = useItems();

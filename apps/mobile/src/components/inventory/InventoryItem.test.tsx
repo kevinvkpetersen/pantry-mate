@@ -4,7 +4,7 @@ import { render, renderHook, screen } from '@testing-library/react-native';
 import { ITEMS_TEST_DATA } from '@/__tests__/fixtures';
 import { expectNoNullishText } from '@/__tests__/utils';
 import type { BadgeVariant } from '@/hooks/useStyles';
-import useStyles from '@/hooks/useStyles';
+import { useStyles } from '@/hooks/useStyles';
 
 import InventoryItem from './InventoryItem';
 
