@@ -5,10 +5,10 @@ import { useItems } from '@/hooks/useItems';
 import { useStyles } from '@/hooks/useStyles';
 
 const InventoryList = () => {
-    const { items, error, loading } = useItems();
+    const { data: items, error, isLoading } = useItems();
     const styles = useStyles();
 
-    if (loading)
+    if (isLoading)
         return (
             <ActivityIndicator
                 style={{ flex: 1 }}
@@ -16,7 +16,9 @@ const InventoryList = () => {
             />
         );
     if (error)
-        return <Text style={{ padding: 24 }}>Failed to load: {error}</Text>;
+        return (
+            <Text style={{ padding: 24 }}>Failed to load: {error.message}</Text>
+        );
 
     return (
         <FlatList
