@@ -27,7 +27,7 @@ Both projects load `@pantry-mate/types` from its TypeScript source, through the 
 The mobile app uses Jest with the `jest-expo` preset and React Native Testing Library (see [decision 0008](decisions/0008-vitest-for-the-api-jest-for-mobile.md)). The config is the `jest` block in `apps/mobile/package.json`.
 
 - **Unit tests** sit beside the code they test (`*.test.ts` or `*.test.tsx`). Files in `src/app/` are routes, so tests for screens live in `src/__tests__/app/` instead.
-- **Shared helpers** live in `src/__tests__/`: `fixtures.ts` for test data, `utils.ts` for shared assertions, and `setup.ts`, which runs before every test file. Jest only runs files ending in `.test.*`, so helpers there aren't treated as tests, and they're left out of coverage.
+- **Shared helpers** live in `src/__tests__/`: `fixtures.ts` for test data, `utils.tsx` for shared assertions and `renderWithClient`, which wraps a component in a fresh React Query client with retries off, and `setup.ts`, which runs before every test file. Jest only runs files ending in `.test.*`, so helpers there aren't treated as tests, and they're left out of coverage.
 - **API calls are mocked.** Tests mock `@/api/items` with `jest.mock`, and `fetch` with `jest.spyOn(globalThis, 'fetch')`. `resetMocks` is on, so each test, or a `beforeEach`, sets the values its mocks return.
 - **Jest's globals** (`describe`, `it`, `expect`, `jest`) are used without imports. `@types/jest` types them, through `"types": ["jest"]` in the tsconfig.
 - **`render` is async** in React Native Testing Library 14, so `await render(...)`. Older examples online don't.
