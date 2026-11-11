@@ -1,7 +1,7 @@
-import { render, screen } from '@testing-library/react-native';
+import { screen } from '@testing-library/react-native';
 
 import { ITEMS_TEST_DATA } from '@/__tests__/fixtures';
-import { expectNoNullishText } from '@/__tests__/utils';
+import { expectNoNullishText, renderWithClient } from '@/__tests__/utils';
 import { fetchItems } from '@/api/items';
 
 import InventoryList from './InventoryList';
@@ -20,9 +20,11 @@ describe('InventoryList', () => {
             Object.values(ITEMS_TEST_DATA)
         );
 
-        await render(<InventoryList />);
+        await renderWithClient(<InventoryList />);
 
-        expect(screen.getByText(ITEMS_TEST_DATA.rice.name)).toBeOnTheScreen();
+        expect(
+            await screen.findByText(ITEMS_TEST_DATA.rice.name)
+        ).toBeOnTheScreen();
         expect(screen.getByText(ITEMS_TEST_DATA.eggs.name)).toBeOnTheScreen();
     });
 
@@ -31,33 +33,20 @@ describe('InventoryList', () => {
             new Error('TEST ERROR MESSAGE')
         );
 
-        await render(<InventoryList />);
+        await renderWithClient(<InventoryList />);
 
         expect(
-            screen.getByText('Failed to load', { exact: false })
+            await screen.findByText('Failed to load', { exact: false })
         ).toBeOnTheScreen();
         expect(
             screen.getByText('TEST ERROR MESSAGE', { exact: false })
         ).toBeOnTheScreen();
     });
 
-    it('renders error if fetch fails with an unknown error', async () => {
-        jest.mocked(fetchItems).mockRejectedValue('Non-error type');
-
-        await render(<InventoryList />);
-
-        expect(
-            screen.getByText('Failed to load', { exact: false })
-        ).toBeOnTheScreen();
-        expect(
-            screen.getByText('Unknown error', { exact: false })
-        ).toBeOnTheScreen();
-    });
-
     it('renders a loading indicator while waiting for the data', async () => {
         jest.mocked(fetchItems).mockReturnValue(new Promise(() => {}));
 
-        await render(<InventoryList />);
+        await renderWithClient(<InventoryList />);
 
         expect(screen.getByLabelText('Loading')).toBeOnTheScreen();
     });

@@ -1,7 +1,7 @@
 import { render, renderHook, screen } from '@testing-library/react-native';
 
 import { expectNoNullishText } from '@/__tests__/utils';
-import useStyles, { BADGE_VARIANTS } from '@/hooks/useStyles';
+import { BADGE_VARIANTS, useStyles } from '@/hooks/useStyles';
 
 import Badge from './Badge';
 

@@ -22,6 +22,7 @@ Short records of the significant technical decisions in this project: what was c
 | [0014](0014-dependency-install-scripts-blocked-by-default.md) | Dependency install scripts blocked by default | Accepted           |
 | [0015](0015-zod-schemas-in-the-shared-types-package.md)       | Zod schemas in the shared types package       | Accepted           |
 | [0016](0016-coverage-provider-per-test-runner.md)             | Coverage provider per test runner             | Accepted           |
+| [0017](0017-tanstack-query-for-data-fetching.md)              | TanStack Query for data fetching              | Accepted           |
 
 ## Adding a decision
 

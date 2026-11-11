@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react-native';
+import { screen } from '@testing-library/react-native';
 
 import { ITEMS_TEST_DATA } from '@/__tests__/fixtures';
 import { fetchItems } from '@/api/items';
 import Index from '@/app/index';
 
-import { expectNoNullishText } from '../utils';
+import { expectNoNullishText, renderWithClient } from '../utils';
 
 jest.mock('@/api/items', () => ({
     fetchItems: jest.fn(),
@@ -18,8 +18,10 @@ describe('Index', () => {
     it('renders the inventory list', async () => {
         jest.mocked(fetchItems).mockResolvedValue([ITEMS_TEST_DATA.rice]);
 
-        await render(<Index />);
+        await renderWithClient(<Index />);
 
-        expect(screen.getByText(ITEMS_TEST_DATA.rice.name)).toBeOnTheScreen();
+        expect(
+            await screen.findByText(ITEMS_TEST_DATA.rice.name)
+        ).toBeOnTheScreen();
     });
 });

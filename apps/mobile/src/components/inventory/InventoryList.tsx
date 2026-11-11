@@ -1,30 +1,14 @@
-import type { Item } from '@pantry-mate/types';
-import { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text } from 'react-native';
 
-import { fetchItems } from '@/api/items';
 import InventoryItem from '@/components/inventory/InventoryItem';
-import useStyles from '@/hooks/useStyles';
+import { useItems } from '@/hooks/useItems';
+import { useStyles } from '@/hooks/useStyles';
 
 const InventoryList = () => {
+    const { data: items, error, isLoading } = useItems();
     const styles = useStyles();
 
-    const [items, setItems] = useState<Item[]>([]);
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        fetchItems()
-            .then(setItems)
-            .catch((e: unknown) => {
-                setError(e instanceof Error ? e.message : 'Unknown error');
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, []);
-
-    if (loading)
+    if (isLoading)
         return (
             <ActivityIndicator
                 style={{ flex: 1 }}
@@ -32,7 +16,9 @@ const InventoryList = () => {
             />
         );
     if (error)
-        return <Text style={{ padding: 24 }}>Failed to load: {error}</Text>;
+        return (
+            <Text style={{ padding: 24 }}>Failed to load: {error.message}</Text>
+        );
 
     return (
         <FlatList

@@ -1,9 +1,16 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 
-import useStyles from '@/hooks/useStyles';
+import { useStyles } from '@/hooks/useStyles';
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
     const { canvas } = useStyles();
 
-    return <Stack screenOptions={{ contentStyle: canvas.background }} />;
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Stack screenOptions={{ contentStyle: canvas.background }} />
+        </QueryClientProvider>
+    );
 }
